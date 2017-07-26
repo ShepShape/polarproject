@@ -1,7 +1,7 @@
 //configuration settings, set these as you wish
 
 console_debugging = true;
-synth1_substring = "VirtualMIDISynth #1";
+synth1_substring = "SimpleSynth virtual input";
 synth1_channel1 = 1;
 
 
