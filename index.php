@@ -10,9 +10,13 @@
 <html>
 <head>
 <script src="js/webmidi.min.js"></script>
+<script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/polarmusic.js"></script>
 <script>
+$(function() {
     WebMidiStart();
+});
+
 </script>
 </head>
 <body>
