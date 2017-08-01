@@ -30,9 +30,7 @@ var PolarSynth = (function() {
         midiOut= WebMidi.getOutputByName(params.synthString); //sets a midi output object by using the midi output string name as a reference, find the string name in the output from the above line
         $.getJSON( "icefiles/northice.json", parseGeoJSON); //get the json file in the first argument and call the parseGeoJSON function after getting it
     }
-
-
-
+    
 
     var parseGeoJSON = function(data) {
         var coords; //an array of all the points in a feature
@@ -92,6 +90,7 @@ var PolarSynth = (function() {
 // utility functions
 
 function debug(debug_arg) {
+
     if (CONSOLE_DEBUGGING) console.log(debug_arg);
 }
 
@@ -116,4 +115,5 @@ function angleSort(a,b) {
     if (a.t < b.t) return -1;
     if (b.t > a.t) return 1;
     return 1;
+
 }
