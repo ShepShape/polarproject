@@ -30,7 +30,7 @@ var PolarSynth = (function() {
         midiOut= WebMidi.getOutputByName(params.synthString); //sets a midi output object by using the midi output string name as a reference, find the string name in the output from the above line
         $.getJSON( "icefiles/northice.json", parseGeoJSON); //get the json file in the first argument and call the parseGeoJSON function after getting it
     }
-    
+
 
     var parseGeoJSON = function(data) {
         var coords; //an array of all the points in a feature
@@ -76,6 +76,7 @@ var PolarSynth = (function() {
             notePoint = northPoints[i];
             notePitch = translateRadiusToPitch(notePoint.r,northMinRadius,northMaxRadius,params.minNote,params.maxNote,params.scaleLength,params.scaleNotes);
             noteTime = translateAngleToTime(notePoint.t);
+            console.log(noteTime);
             noteQueue.push(setTimeout(function(nP){
                 midiOut.playNote(nP,params.synthDefaultChannel,{duration:(Math.floor(Math.random()*150+150)),velocity:(Math.random()*0.6+0.2)});
             },noteTime,notePitch));

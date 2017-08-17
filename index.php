@@ -25,7 +25,7 @@
             scaleLength : 12,
             scaleNotes : [1,2,4,5,7,9,11],
             lengthInSeconds : 1800,
-            tempoBPM : 70,
+            tempoBPM : 60,
             tempoLengths : [0.25,0.5,1,2,4]
         });
         northPole.WebMidiStart();
