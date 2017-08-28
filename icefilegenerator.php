@@ -15,7 +15,12 @@ define('STARTING_YEAR',1990); //what year do you want to start collecting data?
 define('ICE_FILES_PATH','icefiles');
 define('REGENERATE_FILES',true);
 
-
+$GLOBALS["northPoleMIDIParams"] = (object) [
+    minNote => 24,
+    maxNote => 96,
+    scaleLength => 12,
+    centreReference => new Point(225,125)
+];
 
 
 class PolarProject
@@ -92,7 +97,7 @@ class PolarProject
         fclose($tmpSPDensityHandle); //close the file handle
         $northFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/north_".$y."-".$m."-".$d;
         $southFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/south_".$y."-".$m."-".$d;
-        self::convertFiles($tmpNPExtentTiff,$tmpNPDensityTiff, $northFileOutputName,true); //convert the north pole extent and density files
+        self::convertImageFiles($tmpNPExtentTiff,$tmpNPDensityTiff, $northFileOutputName,true); //convert the north pole extent and density files
         unlink($tmpNPExtentTiff); //delete temp TIFF files -- we no longer need them
         unlink($tmpNPDensityTiff); //delete temp TIFF files -- we no longer need them
         unlink($tmpSPExtentTiff); //delete temp TIFF files -- we no longer need them
@@ -100,23 +105,84 @@ class PolarProject
 
     }
 
-    private static function convertFiles($extentTIFF,$densityTIFF, $outputName, $isNorth) {
-        if ((filesize($extentTIFF) > 0) && (filesize($densityTIFF) > 0)) {
-            $tmpExtentBMP = tempnam("tmp", "densityBMP-");
-            $extentImg = new Imagick($extentTIFF);
-            $extentImg->transformImageColorspace(Imagick::COLORSPACE_RGB);
-            $icetarget = 'rgba(255,255,255,1.0)';
-            $nonicefill = 'black';
-            $extentImg->opaquePaintImage($icetarget,$nonicefill,0,true);
-            $extentImg->negateImage(false);
-            $extentImg->setImageFormat('bmp');
-            $extentImg->writeImage($tmpExtentBMP);
-            $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP." -b svg -a 0 -o ".$outputName.".svg";
-            exec($potraceSVGCommand);
-            unlink($tmpExtentBMP);
+    private static function convertImageFiles($extentTIFF,$densityTIFF, $outputName, $isNorth) {
+        if ((filesize($extentTIFF) > 0) && (filesize($densityTIFF) > 0)) { //only do any of this if we have successfully gotten TIFFs -- ie out temporary TIFF files are bigger than size 0
+            $tmpExtentBMP = tempnam("tmp", "densityBMP-"); // temporary BMP for potrace, it requires this image format
+            $tmpGeoJSON =  tempnam("tmp", "geoJSON-"); // temporary GeoJSON file, we won't store it
+            $extentImg = new Imagick($extentTIFF); //an imagemagick object representing our extent TIFF
+            $extentImg->transformImageColorspace(Imagick::COLORSPACE_RGB); //transform the extent TIFF from indexed colour to true RGB
+            $icetarget = 'rgba(255,255,255,1.0)'; // the color of the ice
+            $nonicefill = 'black'; //the color of everything else but the ice
+            $extentImg->opaquePaintImage($icetarget,$nonicefill,0,true); // fill everything except the ice with black
+            $extentImg->negateImage(false); //now invert the image, this gives us black ice on white
+            $extentImg->setImageFormat('bmp'); // convert the TIFF to BMP
+            $extentImg->writeImage($tmpExtentBMP); // write out the BMP to disk
+            $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP." -b svg -a 0 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
+            $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP." -b svg -a 0 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
+            $potraceJSONCommand = POTRACE_PATH." ".$tmpExtentBMP." -b geojson -a 0 -o ".$tmpGeoJSON; // define a potrace command again to generate a temporary GeoJSON file to parse MIDI
+            exec($potraceSVGCommand); //run the first potrace command
+            exec($potraceJSONCommand); // run the second potrace command
+            if ($isNorth) self::generateMIDI($tmpGeoJSON,$GLOBALS["northPoleMIDIParams"]);
+            unlink($tmpGeoJSON); //delete the temporary geojson file
+            unlink($tmpExtentBMP); //delete the temporary BMP file
         }
     }
 
+    private static function generateMIDI($geoJSONFile,$params) {
+        $cleanedJSON = self::parseGeoJSON($geoJSONFile,$params->centreReference);
+    }
+
+    private static function parseGeoJSON($geoJSONFile,$centreRefrence) {
+
+        $geoJSONString =  file_get_contents($geoJSONFile); // get a JSON string from the temporary geoJSON file
+        $geoObj = json_decode($geoJSONString); // convert the JSON string to a php object
+        $outputObj = new stdClass(); // create an object for our MIDI output JSON
+        $outputObj->minRadius = -1; // initialize a minimum radius
+        $outputObj->maxRadius = -1; // initialize a maximum radius
+        $outputObj->orderedPoints = array();
+        foreach($geoObj->features as $feature) { //iterate through the features in the geoJSON
+            $coords = $feature->geometry->coordinates[0]; //assign a shorthand for all the coordinates in a feature (called coords)
+            foreach($coords as $coordinate) { //iterate through the coordinates in the feature
+                $pPoint = new PolarPoint($coordinate[0],$coordinate[1],$params->centreReference);  //define the current polarpoint object from the point in the geoJSON file
+                if (($outputObj->minRadius == -1) || ($pPoint->r < $outputObj->minRadius)) $outputObj->minRadius = $pPoint->r; //set the minimum radius from the current pPoint if it has the smallest value to date;
+                if (($outputObj->maxRadius == -1) || ($pPoint->r > $outputObj->maxRadius)) $outputObj->maxRadius = $pPoint->r; //set the minimum radius from the current pPoint if it has the smallest value to date;
+                array_push($outputObj->orderedPoints,$pPoint);
+            }
+        }
+       usort($outputObj->orderedPoints,array('PolarProject','angleSort'));
+       print_r($outputObj);
+        return $outputObj;
+    }
+
+    private static function angleSort($a,$b) {
+        if ($a->t < $b->t) return -1;
+        if ($b->t > $a->t) return 1;
+        return 1;
+
+    }
+
+}
+
+
+
+class Point {
+    function __construct($x,$y) {
+        $this->x = $x;
+        $this->y = $y;
+    }
+}
+
+class PolarPoint {
+    function __construct($x,$y,$p) {
+        $this->rawx = $x;
+        $this->rawy = $y;
+        $this->x = $x - $p->x;
+        $this->y = $y - $p->y;
+        $this->r = sqrt(pow($this->x,2)+pow($this->y,2));
+        $t_angle = atan2($this->y,$this->x)*(180.0/pi());
+        if ($t_angle < 0) $this->t = $t_angle + 360;
+        else $this->t = $t_angle;
+    }
 }
 
 PolarProject::checkForIceFiles();
