@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fd2b0c72-d07b-4d37-b49c-2cc9334cdd18" name="Lou Sheppard Site" url="http://kimsheppard.net/polarproject/">
+        <fileTransfer host="thedistanceblog.com" port="2222" rootFolder="/home3/nolan/public_html/kimsheppard.net/polarproject/" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="2222" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
