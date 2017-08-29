@@ -154,16 +154,16 @@ class PolarProject
         $midi = new Midi(); //instantiate a new midi file
         $midi->open(MIDI_PPQ); //open it with the timebase specified by the constant
         $midi->setBpm($params->tempoBPM); //set the playback BPM of the MIDI file
-        $polarTrack = $midi->newTrack(); // create a new empty track
+        $midi->newTrack(); // create a new empty track
         $noteLength = MIDI_PPQ / 2; //set a note length for each note
         foreach ($cleanedJSON->orderedPoints as $notePoint) { //for every point in the JSON file
             $notePoint->pitch = self::translateRadiusToPitch($notePoint->r,$cleanedJSON->minRadius,$cleanedJSON->maxRadius,$params->minNote,$params->maxNote,$params->scaleLength,$params->scaleNotes); //translate the radius of the polar coordinate arm to a note value
             $notePoint->time = self::translateAngleToTime($notePoint->t,$params->lengthInSeconds,$params->tempoBPM,$params->tempoLengths); // translate the angle of the polar coordinate arm to a time
             $ppqTimestamp = round(($notePoint->time/1000) * ($params->tempoBPM/60) * MIDI_PPQ); //convert the timestamp in seconds to a timestamp in PPQ
-            print $notePoint->time." ".$ppqTimestamp."\n";
-            $midi->addMsg($polarTrack,  $ppqTimestamp." On ch=1 n=".$notePoint->pitch." v=80"); //add the note on message to the midi file
-            $midi->addMsg($polarTrack,  ($ppqTimestamp+$noteLength)." Off ch=1 n=".$notePoint->pitch." v=80"); //add the note off message to the midi file
+            $midi->insertMsg(1,  $ppqTimestamp." On ch=1 n=".$notePoint->pitch." v=80"); //add the note on message to the midi file
+            $midi->insertMsg(1,  ($ppqTimestamp+$noteLength)." Off ch=1 n=".$notePoint->pitch." v=80"); //add the note off message to the midi file
         }
+        print_r($midi->getTrack(1));
         $cleanedJSON->midiParams = $params; //add the midi parameter data to the JSON file
         file_put_contents($fileName.'.json',json_encode($cleanedJSON)); //write the JSON file
         $midi->saveMidFile($fileName.'.mid'); //write the MIDI file

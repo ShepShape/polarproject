@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fd34e83-c656-4456-930f-cc0ca9f34b7e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.htaccess" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lights.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/icefilegenerator.php" afterPath="$PROJECT_DIR$/icefilegenerator.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/polarmusic.js" afterPath="$PROJECT_DIR$/js/polarmusic.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,7 +17,7 @@
       <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
+            <state relative-caret-position="500">
               <caret line="20" column="36" lean-forward="false" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
               <folding>
                 <element signature="e#6#90#0#PHP" expanded="true" />
@@ -34,18 +29,18 @@
       <file leaf-file-name="polarmusic.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1275">
+            <state relative-caret-position="1226">
               <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="icefilegenerator.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="icefilegenerator.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/icefilegenerator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
-              <caret line="158" column="46" lean-forward="false" selection-start-line="158" selection-start-column="46" selection-end-line="158" selection-end-column="46" />
+            <state relative-caret-position="275">
+              <caret line="173" column="55" lean-forward="true" selection-start-line="173" selection-start-column="55" selection-end-line="173" selection-end-column="56" />
               <folding>
                 <element signature="e#6#143#0#PHP" expanded="true" />
               </folding>
@@ -53,7 +48,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".htaccess" pinned="false" current-in-tab="true">
+      <file leaf-file-name=".htaccess" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.htaccess">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="100">
@@ -76,7 +71,7 @@
       <file leaf-file-name="midi.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/php/midi/midi.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="-2025">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
                 <marker date="1383356246531" expanded="true" signature="10640:10799" ph="..." />
@@ -130,9 +125,9 @@
         <option value="$PROJECT_DIR$/config.json" />
         <option value="$PROJECT_DIR$/js/polarmusic.js" />
         <option value="$PROJECT_DIR$/index.php" />
-        <option value="$PROJECT_DIR$/icefilegenerator.php" />
         <option value="$PROJECT_DIR$/lights.php" />
         <option value="$PROJECT_DIR$/.htaccess" />
+        <option value="$PROJECT_DIR$/icefilegenerator.php" />
       </list>
     </option>
   </component>
@@ -340,15 +335,15 @@
       <workItem from="1503970157167" duration="49000" />
       <workItem from="1503970367522" duration="5543000" />
       <workItem from="1504018467515" duration="9504000" />
-      <workItem from="1504043217643" duration="1147000" />
+      <workItem from="1504043217643" duration="2693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="88269000" />
+    <option name="totallyTimeSpent" value="89815000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="-11" width="3862" height="2120" extended-state="6" />
+    <frame x="-11" y="-11" width="3862" height="2120" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15885417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -672,21 +667,14 @@
     <entry file="file://$PROJECT_DIR$/phpinfo.php" />
     <entry file="file://$PROJECT_DIR$/config.json" />
     <entry file="file://$PROJECT_DIR$/phpinfo.php" />
-    <entry file="file://$PROJECT_DIR$/php/midi/midi.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1383356246531" expanded="true" signature="10640:10799" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mididownload.php" />
     <entry file="file://$PROJECT_DIR$/js/jquery-3.2.1.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
           <caret line="1" column="1319" lean-forward="false" selection-start-line="1" selection-start-column="1318" selection-end-line="1" selection-end-column="1319" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -694,20 +682,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50">
           <caret line="2" column="19" lean-forward="true" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1275">
-          <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state relative-caret-position="500">
           <caret line="20" column="36" lean-forward="false" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
           <folding>
             <element signature="e#6#90#0#PHP" expanded="true" />
@@ -715,13 +696,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/icefilegenerator.php">
+    <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="158" column="46" lean-forward="false" selection-start-line="158" selection-start-column="46" selection-end-line="158" selection-end-column="46" />
+        <state relative-caret-position="1226">
+          <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/midi/midi.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2025">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#6#143#0#PHP" expanded="true" />
+            <marker date="1383356246531" expanded="true" signature="10640:10799" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.htaccess">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="4" column="51" lean-forward="true" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -733,11 +730,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.htaccess">
+    <entry file="file://$PROJECT_DIR$/icefilegenerator.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" column="51" lean-forward="true" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
-          <folding />
+        <state relative-caret-position="275">
+          <caret line="173" column="55" lean-forward="true" selection-start-line="173" selection-start-column="55" selection-end-line="173" selection-end-column="56" />
+          <folding>
+            <element signature="e#6#143#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
