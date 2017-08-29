@@ -3,13 +3,7 @@
 var PolarSynth = (function() {
 
     var midiOut,params;
-    var timeCounter = 0;
-    var northPoints = new Array();
-    var northMinRadius=-1;
-    var northMaxRadius=-1;
-    var temp_Current_Time = 0;
     var noteQueue = new Array();
-
 
     function PolarSynth(p) {
         params = p;
@@ -28,11 +22,11 @@ var PolarSynth = (function() {
     var configSynths = function(err) {
         debug(WebMidi.outputs); //spits out all the available WebMIDI outputs to the console
         midiOut= WebMidi.getOutputByName(params.synthString); //sets a midi output object by using the midi output string name as a reference, find the string name in the output from the above line
-        $.getJSON( "icefiles/northice.json", parseGeoJSON); //get the json file in the first argument and call the parseGeoJSON function after getting it
+        $.getJSON( "icefiles/2017/8/north_2017-8-27.json", startMusic); //get the json file in the first argument and call the parseGeoJSON function after getting it
     }
 
 
-    var parseGeoJSON = function(data) {
+   /** var parseGeoJSON = function(data) {
         var coords; //an array of all the points in a feature
         var p; //individual point object from the json file
         var pPoint; // the new polarPoint object we will declare
@@ -68,17 +62,15 @@ var PolarSynth = (function() {
         var minQuantizeMillis = (60000 / params.tempoBPM) * params.tempoLengths[0];
         var quantizedOutputTime = Math.round(Math.round(rawOutputTime/minQuantizeMillis)*minQuantizeMillis);
         return quantizedOutputTime;
-    }
+    } */
 
-    var startMusic = function () {
-        var notePoint,notePitch,noteTime;
-        for(var i=0;i<northPoints.length;i++) {
-            notePoint = northPoints[i];
-            notePitch = translateRadiusToPitch(notePoint.r,northMinRadius,northMaxRadius,params.minNote,params.maxNote,params.scaleLength,params.scaleNotes);
-            noteTime = translateAngleToTime(notePoint.t);
-            console.log(noteTime);
+    var startMusic = function (data) {
+        var notePitch,noteTime;
+        for(var i=0;i<data.orderedPoints.length;i++) {
+            notePitch = data.orderedPoints[i].pitch;
+            noteTime = data.orderedPoints[i].time;
             noteQueue.push(setTimeout(function(nP){
-                midiOut.playNote(nP,params.synthDefaultChannel,{duration:(Math.floor(Math.random()*150+150)),velocity:(Math.random()*0.6+0.2)});
+                midiOut.playNote(nP,params.synthDefaultChannel,{duration:(Math.floor(Math.random()*150+150)),velocity:80});
             },noteTime,notePitch));
         }
 
@@ -95,7 +87,7 @@ function debug(debug_arg) {
     if (CONSOLE_DEBUGGING) console.log(debug_arg);
 }
 
-function Point(x, y) {
+/**function Point(x, y) {
     this.x = x;
     this.y = y;
 }
@@ -117,4 +109,4 @@ function angleSort(a,b) {
     if (b.t > a.t) return 1;
     return 1;
 
-}
+} */
