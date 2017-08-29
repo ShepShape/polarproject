@@ -160,6 +160,7 @@ class PolarProject
             $notePoint->pitch = self::translateRadiusToPitch($notePoint->r,$cleanedJSON->minRadius,$cleanedJSON->maxRadius,$params->minNote,$params->maxNote,$params->scaleLength,$params->scaleNotes); //translate the radius of the polar coordinate arm to a note value
             $notePoint->time = self::translateAngleToTime($notePoint->t,$params->lengthInSeconds,$params->tempoBPM,$params->tempoLengths); // translate the angle of the polar coordinate arm to a time
             $ppqTimestamp = round(($notePoint->time/1000) * ($params->tempoBPM/60) * MIDI_PPQ); //convert the timestamp in seconds to a timestamp in PPQ
+            print $notePoint->time." ".$ppqTimestamp."\n";
             $midi->addMsg($polarTrack,  $ppqTimestamp." On ch=1 n=".$notePoint->pitch." v=80"); //add the note on message to the midi file
             $midi->addMsg($polarTrack,  ($ppqTimestamp+$noteLength)." Off ch=1 n=".$notePoint->pitch." v=80"); //add the note off message to the midi file
         }
