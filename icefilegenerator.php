@@ -19,7 +19,11 @@ $GLOBALS["northPoleMIDIParams"] = (object) [
     minNote => 24,
     maxNote => 96,
     scaleLength => 12,
-    centreReference => new Point(225,125)
+    centreReference => new Point(152,224),
+    scaleNotes => array(1,2,4,5,7,9,11),
+    lengthInSeconds => 1800,
+    tempoBPM => 60,
+    tempoLengths => array(0.25,0.5,1,2,4)
 ];
 
 
@@ -117,9 +121,8 @@ class PolarProject
             $extentImg->negateImage(false); //now invert the image, this gives us black ice on white
             $extentImg->setImageFormat('bmp'); // convert the TIFF to BMP
             $extentImg->writeImage($tmpExtentBMP); // write out the BMP to disk
-            $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP." -b svg -a 0 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
-            $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP." -b svg -a 0 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
-            $potraceJSONCommand = POTRACE_PATH." ".$tmpExtentBMP." -b geojson -a 0 -o ".$tmpGeoJSON; // define a potrace command again to generate a temporary GeoJSON file to parse MIDI
+            $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP."  -b svg  -n -a 0 -t 0 -O 0 -u 100 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
+            $potraceJSONCommand = POTRACE_PATH." ".$tmpExtentBMP." -b geojson -n -a 0 -t 0 -O 0 -u 100 -o ".$tmpGeoJSON; // define a potrace command again to generate a temporary GeoJSON file to parse MIDI
             exec($potraceSVGCommand); //run the first potrace command
             exec($potraceJSONCommand); // run the second potrace command
             if ($isNorth) self::generateMIDI($tmpGeoJSON,$GLOBALS["northPoleMIDIParams"]);
@@ -130,28 +133,54 @@ class PolarProject
 
     private static function generateMIDI($geoJSONFile,$params) {
         $cleanedJSON = self::parseGeoJSON($geoJSONFile,$params->centreReference);
+        foreach ($cleanedJSON->orderedPoints as $notePoint) {
+            $notePoint->pitch = self::translateRadiusToPitch($notePoint->r,$cleanedJSON->minRadius,$cleanedJSON->maxRadius,$params->minNote,$params->maxNote,$params->scaleLength,$params->scaleNotes);
+            $notePoint->time = self::translateAngleToTime($notePoint->t,$params->lengthInSeconds,$params->tempoBPM,$params->tempoLengths);
+        }
+        //print_r($cleanedJSON);
     }
 
-    private static function parseGeoJSON($geoJSONFile,$centreRefrence) {
-
+    private static function parseGeoJSON($geoJSONFile,$centreReference) {
         $geoJSONString =  file_get_contents($geoJSONFile); // get a JSON string from the temporary geoJSON file
         $geoObj = json_decode($geoJSONString); // convert the JSON string to a php object
         $outputObj = new stdClass(); // create an object for our MIDI output JSON
         $outputObj->minRadius = -1; // initialize a minimum radius
         $outputObj->maxRadius = -1; // initialize a maximum radius
         $outputObj->orderedPoints = array();
+        $count = 0;
         foreach($geoObj->features as $feature) { //iterate through the features in the geoJSON
             $coords = $feature->geometry->coordinates[0]; //assign a shorthand for all the coordinates in a feature (called coords)
             foreach($coords as $coordinate) { //iterate through the coordinates in the feature
-                $pPoint = new PolarPoint($coordinate[0],$coordinate[1],$params->centreReference);  //define the current polarpoint object from the point in the geoJSON file
+                $pPoint = new PolarPoint($coordinate[0],$coordinate[1],$centreReference);  //define the current polarpoint object from the point in the geoJSON file
                 if (($outputObj->minRadius == -1) || ($pPoint->r < $outputObj->minRadius)) $outputObj->minRadius = $pPoint->r; //set the minimum radius from the current pPoint if it has the smallest value to date;
                 if (($outputObj->maxRadius == -1) || ($pPoint->r > $outputObj->maxRadius)) $outputObj->maxRadius = $pPoint->r; //set the minimum radius from the current pPoint if it has the smallest value to date;
                 array_push($outputObj->orderedPoints,$pPoint);
+                $count++;
             }
         }
-       usort($outputObj->orderedPoints,array('PolarProject','angleSort'));
-       print_r($outputObj);
+        print "COUNT: ".$count."\n";
+        usort($outputObj->orderedPoints,array('PolarProject','angleSort'));
+
         return $outputObj;
+    }
+
+    private static function translateRadiusToPitch($val,$min,$max,$pMin,$pMax,$scaleLength,$pScaleArr) {
+        $input_mapping = $val / ($max - $min); //translate the radius to an abstract number between 0 and 1;
+        $num_notes = floor(($pMax-$pMin)/$scaleLength*count($pScaleArr)); // this gives you the number of notes available to you considering the number of octaves and the number of notes in a scale in a single octave
+        $raw_output = floor($num_notes*$input_mapping); //maps the radius to a note in the available notes;
+        $num_octaves = floor(($pMax-$pMin)/$scaleLength);
+        $current_octave = floor($raw_output / count($pScaleArr));
+        $scale_note = $raw_output % count($pScaleArr);
+        $output = $pMin+($scaleLength*$current_octave)+$pScaleArr[$scale_note];
+        return $output;
+    }
+
+    private static function translateAngleToTime($val,$lengthInSeconds,$tempoBPM,$tempoLengths) {
+        $mapping = $val / 360;
+        $rawOutputTime =floor($mapping * 1000 * $lengthInSeconds);
+        $minQuantizeMillis = (60000 / $tempoBPM) * $tempoLengths[0];
+        $quantizedOutputTime = round(round($rawOutputTime/$minQuantizeMillis)*$minQuantizeMillis);
+        return $quantizedOutputTime;
     }
 
     private static function angleSort($a,$b) {
