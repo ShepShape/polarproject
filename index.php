@@ -9,30 +9,20 @@
 ?>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="css/polarproject.css">
     <script src="js/webmidi.min.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/paper/paper-full.js"></script>
     <script src="js/polarmusic.js"></script>
     <script>
-
-         CONSOLE_DEBUGGING = true;
-         $(function() {
-        var northPole = new PolarSynth({
-            synthString : "VirtualMIDISynth #1",
-            synthDefaultChannel : 1,
-        });
-        northPole.WebMidiStart();
-
-
-        $("#stop_all").click(function() {
-            northPole.stopAllNotes();
-        });
-    });
 
 
 
     </script>
+
 </head>
 <body>
 <button id="stop_all">Stop All Notes!</button>
+<canvas id="polarCanvas" resize></canvas>
 </body>
 </html>

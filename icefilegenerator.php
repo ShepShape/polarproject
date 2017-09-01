@@ -3,7 +3,7 @@
  *  ICE FILE GENERATOR FOR LOU SHEPPARD'S POLAR PROJECT
  *  Any questions? -  kennylozowski@gmail.com
  */
-
+ini_set('MAX_EXECUTION_TIME', -1);
 require('./php/midi/midi.class.php'); //include the MIDI library for .mid file generation
 
 define('NSIDC_SERVER','sidads.colorado.edu'); //hostname of the NSIDC FTP server
@@ -16,6 +16,7 @@ define('CONCENTRATION_SUFFIX','_concentration_v2.1.tif'); //suffix for concentra
 define('POTRACE_PATH','/home3/nolan/public_html/cgi-bin/potrace/potrace'); //path to potrace binary file i uploaded to hostgated
 define('STARTING_YEAR',2017); //what year do you want to start collecting data?
 define('MIDI_PPQ',480); //default pulses per quarter note of .mid file generation
+define('BASE_VELOCITY',25);
 define('ICE_FILES_PATH','icefiles'); //path to ice file hierarchy, included density image (JPEG), extent SVG, .mid files and .json files
 define('REGENERATE_FILES',true); // should we regenerate all files each time or only generate files that we don't already have?
 define('ONE_DAY_ONLY',true); //should we generate one set of files only? this is good for testing or if you want to go fast
@@ -29,7 +30,7 @@ $GLOBALS["northPoleMIDIParams"] = (object) [
     scaleNotes => array(1,2,4,5,7,9,11), //notes in the scale we used
     lengthInSeconds => 900, //since the generated piece will always be '360 degrees' long, we determine how long that should be in seconds
     tempoBPM => 60, //tempo we are using
-    tempoLengths => array(0.25,0.5,1,2,4) //available tempo lengths
+    tempoLengths => array(0.25,0.5,1,2) //available tempo lengths
 ];
 
 $GLOBALS["southPoleMIDIParams"] = (object) [
@@ -41,7 +42,7 @@ $GLOBALS["southPoleMIDIParams"] = (object) [
     scaleNotes => array(1,2,4,5,7,9,11), //notes in the scale we used
     lengthInSeconds => 900, //since the generated piece will always be '360 degrees' long, we determine how long that should be in seconds
     tempoBPM => 60, //tempo we are using
-    tempoLengths => array(0.25,0.5,1,2,4) //available tempo lengths
+    tempoLengths => array(0.25,0.5,1,2) //available tempo lengths
 ];
 
 
@@ -138,6 +139,10 @@ class PolarProject
             $extentImg->negateImage(false); //now invert the image, this gives us black ice on white
             $extentImg->setImageFormat('bmp'); // convert the TIFF to BMP
             $extentImg->writeImage($tmpExtentBMP); // write out the BMP to disk
+            $densityImg = new Imagick($densityTIFF);
+            $densityImg->transformImageColorspace(Imagick::COLORSPACE_RGB); //transform the extent TIFF from indexed colour to true RGB
+            $densityImg->setImageFormat('png');
+            $densityImg->writeImage("png24:".$outputName.".png"); // write out the BMP to disk
             $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP."  -b svg  -n -a 0 -t 0 -O 0 -u 100 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
             $potraceJSONCommand = POTRACE_PATH." ".$tmpExtentBMP." -b geojson -n -a 0 -t 0 -O 0 -u 100 -o ".$tmpGeoJSON; // define a potrace command again to generate a temporary GeoJSON file to parse MIDI
             exec($potraceSVGCommand); //run the first potrace command
@@ -155,15 +160,25 @@ class PolarProject
         $midi->open(MIDI_PPQ); //open it with the timebase specified by the constant
         $midi->setBpm($params->tempoBPM); //set the playback BPM of the MIDI file
         $midi->newTrack(); // create a new empty track
-        $noteLength = MIDI_PPQ / 2; //set a note length for each note
+        $lastNoteT = 0; // angle of the last Note -- used for computing duration
+        $lastNoteX = $params->centreReference->x;// cartesian coordinates of the last note, used to compute velocity
+        $lastNoteY = 0;
+        $count = 0;
         foreach ($cleanedJSON->orderedPoints as $notePoint) { //for every point in the JSON file
+            print "count: ".$count."\n";
+            $count++;
             $notePoint->pitch = self::translateRadiusToPitch($notePoint->r,$cleanedJSON->minRadius,$cleanedJSON->maxRadius,$params->minNote,$params->maxNote,$params->scaleLength,$params->scaleNotes); //translate the radius of the polar coordinate arm to a note value
             $notePoint->time = self::translateAngleToTime($notePoint->t,$params->lengthInSeconds,$params->tempoBPM,$params->tempoLengths); // translate the angle of the polar coordinate arm to a time
+            $notePoint->duration = self::translateAngleDifferenceToDuration($notePoint->t,$lastNoteT,$params->lengthInSeconds,$params->tempoBPM,$params->tempoLengths); // translate the difference in angles between current and last notes to a duration;
+            $notePoint->velocity = BASE_VELOCITY + self::getVelocityFromDensity($notePoint->rawx,$notePoint->rawy,$lastNoteX,$lastNoteY,$params->centreReference->x,$params->CentreReference->y,$fileName);
             $ppqTimestamp = round(($notePoint->time/1000) * ($params->tempoBPM/60) * MIDI_PPQ); //convert the timestamp in seconds to a timestamp in PPQ
+            $noteLength = round(($notePoint->duration/1000) * ($params->tempoBPM/60) * MIDI_PPQ); //convert the timestamp in seconds to a timestamp in PPQ
             $midi->insertMsg(1,  $ppqTimestamp." On ch=1 n=".$notePoint->pitch." v=80"); //add the note on message to the midi file
             $midi->insertMsg(1,  ($ppqTimestamp+$noteLength)." Off ch=1 n=".$notePoint->pitch." v=80"); //add the note off message to the midi file
+            $lastNoteT = $notePoint->t;
+            $lastNoteX = $notePoint->rawx;
+            $lastNoteY = $notePoint->rawy;
         }
-        print_r($midi->getTrack(1));
         $cleanedJSON->midiParams = $params; //add the midi parameter data to the JSON file
         file_put_contents($fileName.'.json',json_encode($cleanedJSON)); //write the JSON file
         $midi->saveMidFile($fileName.'.mid'); //write the MIDI file
@@ -209,11 +224,65 @@ class PolarProject
         return $quantizedOutputTime;
     }
 
+    private static function translateAngleDifferenceToDuration($valCurrent,$valLast,$lengthInSeconds,$tempoBPM,$tempoLengths) {
+        $mapping = ($valCurrent - $valLast) / 360;
+        $rawOutputTime =floor($mapping * 1000 * $lengthInSeconds);
+        $minQuantizeMillis = (60000 / $tempoBPM) * $tempoLengths[0];
+        $maxQuantizeMillis = (60000 / $tempoBPM) * $tempoLengths[count($tempoLengths)-1];
+        $quantizedOutputTime = round(round($rawOutputTime/$minQuantizeMillis)*$minQuantizeMillis);
+        if ($quantizedOutputTime < $minQuantizeMillis) $quantizedOutputTime = $minQuantizeMillis;
+        if ($quantizedOutputTime > $maxQuantizeMillis) $quantizedOutputTime = $maxQuantizeMillis;
+        return $quantizedOutputTime;
+    }
+
+    private static function getVelocityFromDensity($x1,$y1,$x2,$y2,$x3,$y3,$densityFileName) {
+
+        $densityImg = new Imagick($densityFileName.".png");
+        $densityImg->setResourceLimit(Imagick::RESOURCETYPE_MEMORY, 256);
+        $densityImg->setResourceLimit(Imagick::RESOURCETYPE_MAP, 256);
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_AREA, 1512);
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_FILE, 768);
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_DISK, -1);
+        $minX = min(array($x1,$x2,$x3));
+        $maxX = max(array($x1,$x2,$x3));
+        $minY = min(array($y1,$y2,$y3));
+        $maxY = max(array($y1,$y2,$y3));
+        $tcount = 0;
+        $icount = 0;
+        for ($y=$minY;$y<$maxY;$y++) {
+            for ($x=$minX;$x<$maxX;$x++) {
+                if (self::pointInTriangle(new Point($x,$y),new Point($x1,$y1),new Point($x2,$y2),new Point($x3,$y3 ))) {
+                    $tcount++;
+                    $pixel = $densityImg->getImagePixelColor($x,$y);
+                    $rgb = $pixel->getColor();
+                    $icount += $rgb["r"];
+                }
+
+            };
+        };
+        $densityImg->clear();
+        if ($tcount == 0) $tcount = 1;
+        if ($icount == 0) $icount = 1;
+        $velocity = round( ($icount / ($tcount*255)) * 127);
+        return $velocity;
+    }
+
     private static function angleSort($a,$b) {
         if ($a->t < $b->t) return -1;
         if ($b->t > $a->t) return 1;
         return 1;
 
+    }
+
+    private static function sign ($p1, $p2, $p3) {
+        return ($p1->x - $p3->x) * ($p2->y - $p3->y) - ($p2->x - $p3->x) * ($p1->y - $p3->y);
+    }
+
+    private static function pointInTriangle ($pt, $v1, $v2, $v3) {
+        $b1 = self::sign($pt, $v1, $v2) < 0.0;
+        $b2 = self::sign($pt, $v2, $v3) < 0.0;
+        $b3 = self::sign($pt, $v3, $v1) < 0.0;
+        return (($b1 == $b2) && ($b2 == $b3));
     }
 
 }
