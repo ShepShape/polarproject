@@ -3,8 +3,9 @@ var northPolePaths,southPolePaths;
 
 function createSynths(err) {
     var northPole = new PolarSynth({
-        fileString : "icefiles/2017/8/north_2017-8-30.json",
+        fileString : "icefiles/2017/1/2017-1-1_north.json",
         synthDefaultChannel : 1,
+        moveSpeed : 0.2
     });
    /** var southPole = new PolarSynth({
         fileString : "icefiles/2017/8/south_2017-8-30.json",
@@ -36,7 +37,13 @@ function PolarSynth(p) {
     this.params = p;
     this.midiOut= WebMidi.outputs[0];
     this.noteQueue = new Array();
-    this.paths = new Array();
+    this.paths = new paper.Group();
+    this.upSpeed = -1;
+    if (this.params.moveSpeed) this.upSpeed = 0-this.params.moveSpeed;
+    console.log(this.upSpeed);
+    this.lastNP = 0;
+    this.lastVert = 0;
+    this.vertOffset = 0;
     var self = this;
 
 
@@ -50,12 +57,20 @@ function PolarSynth(p) {
         console.log('the end');
     }
 
-    this.drawNote = function(nP,nT) {
-        var vertPosition = nT / 50;
-        var myIndex = this.paths.push(new paper.Path()) - 1;
-        this.paths[myIndex].strokeColor = 'black';
-        this.paths[myIndex].add([0,vertPosition]);
-        this.paths[myIndex].add([nP,vertPosition]);
+    this.drawNote = function(nP,nT,nV) {
+        var vertPosition = (nT / 50);
+        var newPath = new paper.Path();
+
+        newPath.fillColor = new paper.Color(nV/127);
+        newPath.add([0,this.lastVert]);
+        newPath.add([this.lastNP,this.lastVert]);
+        newPath.add([nP,vertPosition]);
+        newPath.add([0,vertPosition]);
+        newPath.closed = true;
+        newPath.translate(0,this.vertOffset);
+        this.paths.addChild(newPath);
+        this.lastVert = vertPosition;
+        this.lastNP = nP;
         paper.view.draw();
     }
 
@@ -66,18 +81,17 @@ function PolarSynth(p) {
             noteTime = data.orderedPoints[i].time;
             noteDuration = data.orderedPoints[i].duration;
             noteVelocity = data.orderedPoints[i].velocity;
-            self.noteQueue.push(setTimeout(function(nP,nT){
+            self.noteQueue.push(setTimeout(function(nP,nT,nV){
                 self.midiOut.playNote(nP,self.params.synthDefaultChannel,{duration:noteDuration,velocity:noteVelocity});
-                self.drawNote(nP,nT);
-            },noteTime,notePitch,noteTime));
+                self.drawNote(nP,nT,nV);
+            },noteTime,notePitch,noteTime,noteVelocity));
         }
         setTimeout(self.resetSynth,(noteTime+noteDuration));
     }
 
     paper.view.onFrame = function(event) {
-        for (i=0;i<self.paths.length;i++) {
-           self.paths[i].translate([0,-1]);
-        }
+           self.paths.translate([0,self.upSpeed]);
+           self.vertOffset += self.upSpeed;
     }
 
     $.getJSON(this.params.fileString, function(data) {self.startMusic(data)});

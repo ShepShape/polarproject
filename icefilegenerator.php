@@ -4,6 +4,8 @@
  *  Any questions? -  kennylozowski@gmail.com
  */
 ini_set('MAX_EXECUTION_TIME', -1);
+ini_set('MAX_INPUT_TIME', -1);
+set_time_limit(0);
 require('./php/midi/midi.class.php'); //include the MIDI library for .mid file generation
 
 define('NSIDC_SERVER','sidads.colorado.edu'); //hostname of the NSIDC FTP server
@@ -13,13 +15,14 @@ define('NORTH_POLE_FILE_PREFIX','N_'); //prefix for north pole TIFF files before
 define('SOUTH_POLE_FILE_PREFIX','S_'); //prefix for south pole TIFF files before date
 define('EXTENT_SUFFIX','_extent_v2.1.tif'); //suffix for extent TIFF files
 define('CONCENTRATION_SUFFIX','_concentration_v2.1.tif'); //suffix for concentration TIFF files
-define('POTRACE_PATH','/home3/nolan/public_html/cgi-bin/potrace/potrace'); //path to potrace binary file i uploaded to hostgated
+define('POTRACE_PATH','/home/lousheppard/polarproject.banff.org/potrace/potrace'); //path to potrace binary file i uploaded to hostgated
 define('STARTING_YEAR',2017); //what year do you want to start collecting data?
 define('MIDI_PPQ',480); //default pulses per quarter note of .mid file generation
-define('BASE_VELOCITY',25);
+define('BASE_VELOCITY',25); //lowest possible velocity setting
 define('ICE_FILES_PATH','icefiles'); //path to ice file hierarchy, included density image (JPEG), extent SVG, .mid files and .json files
 define('REGENERATE_FILES',true); // should we regenerate all files each time or only generate files that we don't already have?
-define('ONE_DAY_ONLY',true); //should we generate one set of files only? this is good for testing or if you want to go fast
+define('ONE_DAY_ONLY',false); //should we generate one set of files only? this is good for testing or if you want to go fast
+define('POINT_DEBUG',false); //should we generate one set of files only? this is good for testing or if you want to go fast
 
 $GLOBALS["northPoleMIDIParams"] = (object) [
     whichPole => "north", //indicates which pole we're dealing with
@@ -68,7 +71,15 @@ class PolarProject
                 $lastDayInMonth = (($y==$lastYear) && ($m==$lastMonthInYear)) ? $lastDay : cal_days_in_month(CAL_GREGORIAN,$m,$y); //last day of the month is either the last day of this calendar month or $yesterday's day if we've come up to the present
                 if (!file_exists(ICE_FILES_PATH."/".$y."/".$m)) mkdir(ICE_FILES_PATH."/".$y."/".$m); // create a directory for the month if it doesn't exist
                 for ($d=$firstDay;$d<=$lastDayInMonth;$d++) { //iterate over the days in the month from the outer loop
-                    if (!file_exists("./".ICE_FILES_PATH."/".$y."/".$m."/north_".$y."-".$m."-".$d.".json")) self::getTIFFs($y,$m,$d); // check to see if the JSON file exists for this day, if not, go get the TIFFs from NSIDC
+                    if (!file_exists("./".ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_south.json")) {
+                        if (POINT_DEBUG) print "Processing";
+                        $startTime = time();
+                        print "Starting ".$y."-".$m."-".$d."...";
+                        self::getTIFFs($y, $m, $d); // check to see if the JSON file exists for this day, if not, go get the TIFFs from NSIDC
+                        $endTime = time();
+                        if (POINT_DEBUG) print "\n";
+                        print "Converted ".$y."-".$m."-".$d." in ".($endTime-$startTime)." seconds.\n";
+                    }
                 }
             }
         }
@@ -116,8 +127,8 @@ class PolarProject
         curl_exec($curl_south_density); //run CURL
         curl_close($curl_south_density); //finish CURL
         fclose($tmpSPDensityHandle); //close the file handle
-        $northFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/north_".$y."-".$m."-".$d; //north file naming convention - same for density image, extent SVG, JSON and .MID file
-        $southFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/south_".$y."-".$m."-".$d; // south file naming convention
+        $northFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_north"; //north file naming convention - same for density image, extent SVG, JSON and .MID file
+        $southFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_south"; // south file naming convention
         self::convertImageFiles($tmpNPExtentTiff,$tmpNPDensityTiff, $northFileOutputName,true); //convert the north pole extent and density files
         self::convertImageFiles($tmpSPExtentTiff,$tmpSPDensityTiff, $southFileOutputName,false); //convert the south pole extent and density files
         unlink($tmpNPExtentTiff); //delete temp TIFF files -- we no longer need them
@@ -132,6 +143,11 @@ class PolarProject
             $tmpExtentBMP = tempnam("tmp", "densityBMP-"); // temporary BMP for potrace, it requires this image format
             $tmpGeoJSON =  tempnam("tmp", "geoJSON-"); // temporary GeoJSON file, we won't store it
             $extentImg = new Imagick($extentTIFF); //an imagemagick object representing our extent TIFF
+            $extentImg->setResourceLimit(imagick::RESOURCETYPE_MEMORY, 256); //constants for imagemagick setup
+            $extentImg->setResourceLimit(imagick::RESOURCETYPE_MAP, 256);
+            $extentImg->setResourceLimit(imagick::RESOURCETYPE_AREA, 1512);
+            $extentImg->setResourceLimit(imagick::RESOURCETYPE_FILE, 768);
+            $extentImg->setResourceLimit(imagick::RESOURCETYPE_DISK, -1);
             $extentImg->transformImageColorspace(Imagick::COLORSPACE_RGB); //transform the extent TIFF from indexed colour to true RGB
             $icetarget = 'rgba(255,255,255,1.0)'; // the color of the ice
             $nonicefill = 'black'; //the color of everything else but the ice
@@ -139,10 +155,18 @@ class PolarProject
             $extentImg->negateImage(false); //now invert the image, this gives us black ice on white
             $extentImg->setImageFormat('bmp'); // convert the TIFF to BMP
             $extentImg->writeImage($tmpExtentBMP); // write out the BMP to disk
+            $extentImg->clear(); //destroy the imagemagick resource
             $densityImg = new Imagick($densityTIFF);
+            $extentImg = new Imagick($extentTIFF);
+            $densityImg->setResourceLimit(imagick::RESOURCETYPE_MEMORY, 256); //constants for imagemagick setup
+            $densityImg->setResourceLimit(imagick::RESOURCETYPE_MAP, 256);
+            $densityImg->setResourceLimit(imagick::RESOURCETYPE_AREA, 1512);
+            $densityImg->setResourceLimit(imagick::RESOURCETYPE_FILE, 768);
+            $densityImg->setResourceLimit(imagick::RESOURCETYPE_DISK, -1);
             $densityImg->transformImageColorspace(Imagick::COLORSPACE_RGB); //transform the extent TIFF from indexed colour to true RGB
             $densityImg->setImageFormat('png');
             $densityImg->writeImage("png24:".$outputName.".png"); // write out the BMP to disk
+            $densityImg->clear(); //destroy the imagemagick resource
             $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP."  -b svg  -n -a 0 -t 0 -O 0 -u 100 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
             $potraceJSONCommand = POTRACE_PATH." ".$tmpExtentBMP." -b geojson -n -a 0 -t 0 -O 0 -u 100 -o ".$tmpGeoJSON; // define a potrace command again to generate a temporary GeoJSON file to parse MIDI
             exec($potraceSVGCommand); //run the first potrace command
@@ -164,21 +188,29 @@ class PolarProject
         $lastNoteX = $params->centreReference->x;// cartesian coordinates of the last note, used to compute velocity
         $lastNoteY = 0;
         $count = 0;
+        $densityImg = new Imagick($fileName.".png");
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_MEMORY, 256); //constants for imagemagick setup
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_MAP, 256);
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_AREA, 1512);
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_FILE, 768);
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_DISK, -1);
+        $densityImg->setResourceLimit(imagick::RESOURCETYPE_TIME, 600);
         foreach ($cleanedJSON->orderedPoints as $notePoint) { //for every point in the JSON file
-            print "count: ".$count."\n";
+            if (POINT_DEBUG) print ".";
             $count++;
             $notePoint->pitch = self::translateRadiusToPitch($notePoint->r,$cleanedJSON->minRadius,$cleanedJSON->maxRadius,$params->minNote,$params->maxNote,$params->scaleLength,$params->scaleNotes); //translate the radius of the polar coordinate arm to a note value
             $notePoint->time = self::translateAngleToTime($notePoint->t,$params->lengthInSeconds,$params->tempoBPM,$params->tempoLengths); // translate the angle of the polar coordinate arm to a time
             $notePoint->duration = self::translateAngleDifferenceToDuration($notePoint->t,$lastNoteT,$params->lengthInSeconds,$params->tempoBPM,$params->tempoLengths); // translate the difference in angles between current and last notes to a duration;
-            $notePoint->velocity = BASE_VELOCITY + self::getVelocityFromDensity($notePoint->rawx,$notePoint->rawy,$lastNoteX,$lastNoteY,$params->centreReference->x,$params->CentreReference->y,$fileName);
+            $notePoint->velocity = BASE_VELOCITY + self::getVelocityFromDensity($notePoint->rawx,$notePoint->rawy,$lastNoteX,$lastNoteY,$params->centreReference->x,$params->centreReference->y,$densityImg);
             $ppqTimestamp = round(($notePoint->time/1000) * ($params->tempoBPM/60) * MIDI_PPQ); //convert the timestamp in seconds to a timestamp in PPQ
             $noteLength = round(($notePoint->duration/1000) * ($params->tempoBPM/60) * MIDI_PPQ); //convert the timestamp in seconds to a timestamp in PPQ
-            $midi->insertMsg(1,  $ppqTimestamp." On ch=1 n=".$notePoint->pitch." v=80"); //add the note on message to the midi file
-            $midi->insertMsg(1,  ($ppqTimestamp+$noteLength)." Off ch=1 n=".$notePoint->pitch." v=80"); //add the note off message to the midi file
+            $midi->insertMsg(1,  $ppqTimestamp." On ch=1 n=".$notePoint->pitch." v=".$notePoint->velocity); //add the note on message to the midi file
+            $midi->insertMsg(1,  ($ppqTimestamp+$noteLength)." Off ch=1 n=".$notePoint->pitch." v=".$notePoint->velocity); //add the note off message to the midi file
             $lastNoteT = $notePoint->t;
             $lastNoteX = $notePoint->rawx;
             $lastNoteY = $notePoint->rawy;
         }
+        $densityImg->clear();
         $cleanedJSON->midiParams = $params; //add the midi parameter data to the JSON file
         file_put_contents($fileName.'.json',json_encode($cleanedJSON)); //write the JSON file
         $midi->saveMidFile($fileName.'.mid'); //write the MIDI file
@@ -209,16 +241,16 @@ class PolarProject
         $input_mapping = $val / ($max - $min); //translate the radius to an abstract number between 0 and 1;
         $num_notes = floor(($pMax-$pMin)/$scaleLength*count($pScaleArr)); // this gives you the number of notes available to you considering the number of octaves and the number of notes in a scale in a single octave
         $raw_output = floor($num_notes*$input_mapping); //maps the radius to a note in the available notes;
-        $num_octaves = floor(($pMax-$pMin)/$scaleLength);
-        $current_octave = floor($raw_output / count($pScaleArr));
-        $scale_note = $raw_output % count($pScaleArr);
-        $output = $pMin+($scaleLength*$current_octave)+$pScaleArr[$scale_note];
+        $num_octaves = floor(($pMax-$pMin)/$scaleLength); //maps the radius among octaves
+        $current_octave = floor($raw_output / count($pScaleArr)); //determines the current octave according to the scale
+        $scale_note = $raw_output % count($pScaleArr); //determines the scale note from the array fo available notes
+        $output = $pMin+($scaleLength*$current_octave)+$pScaleArr[$scale_note]; //computers the output note
         return $output;
     }
 
     private static function translateAngleToTime($val,$lengthInSeconds,$tempoBPM,$tempoLengths) {
-        $mapping = $val / 360;
-        $rawOutputTime =floor($mapping * 1000 * $lengthInSeconds);
+        $mapping = $val / 360; //gives you a number between 0 and 1 by dividing by the number of degrees (angle should always
+        $rawOutputTime =floor($mapping * 1000 * $lengthInSeconds); //raw output time in seconds before quantization
         $minQuantizeMillis = (60000 / $tempoBPM) * $tempoLengths[0];
         $quantizedOutputTime = round(round($rawOutputTime/$minQuantizeMillis)*$minQuantizeMillis);
         return $quantizedOutputTime;
@@ -235,50 +267,53 @@ class PolarProject
         return $quantizedOutputTime;
     }
 
-    private static function getVelocityFromDensity($x1,$y1,$x2,$y2,$x3,$y3,$densityFileName) {
-
-        $densityImg = new Imagick($densityFileName.".png");
-        $densityImg->setResourceLimit(Imagick::RESOURCETYPE_MEMORY, 256);
-        $densityImg->setResourceLimit(Imagick::RESOURCETYPE_MAP, 256);
-        $densityImg->setResourceLimit(imagick::RESOURCETYPE_AREA, 1512);
-        $densityImg->setResourceLimit(imagick::RESOURCETYPE_FILE, 768);
-        $densityImg->setResourceLimit(imagick::RESOURCETYPE_DISK, -1);
-        $minX = min(array($x1,$x2,$x3));
-        $maxX = max(array($x1,$x2,$x3));
-        $minY = min(array($y1,$y2,$y3));
-        $maxY = max(array($y1,$y2,$y3));
+    private static function getVelocityFromDensity($x1,$y1,$x2,$y2,$x3,$y3,$dI) {
+        $d = $dI->getImageGeometry();
+        $w = $d['width'];
+        $h = $d['height'];
+        $minX = min(array((int)$x1,(int)$x2,(int)$x3));
+        if ($minX < 0) $minX = 0;
+        $maxX = max(array((int)$x1,(int)$x2,(int)$x3));
+        if ($maxX > $w) $maxX = $w;
+        $minY = min(array((int)$y1,(int)$y2,(int)$y3));
+        if ($minX < 0) $minX = 0;
+        $maxY = max(array((int)$y1,(int)$y2,(int)$y3));
+        if ($maxY > $h) $maxY = $h;
         $tcount = 0;
         $icount = 0;
         for ($y=$minY;$y<$maxY;$y++) {
             for ($x=$minX;$x<$maxX;$x++) {
-                if (self::pointInTriangle(new Point($x,$y),new Point($x1,$y1),new Point($x2,$y2),new Point($x3,$y3 ))) {
+                if (self::pointInTriangle(new Point($x,$y),new Point($x1,$y1),new Point($x2,$y2),new Point($x3,$y3))) {
                     $tcount++;
-                    $pixel = $densityImg->getImagePixelColor($x,$y);
-                    $rgb = $pixel->getColor();
-                    $icount += $rgb["r"];
+                    try {
+                        $pixel = $dI->getImagePixelColor($x, $y);
+                        $rgb = $pixel->getColor();
+                        $icount += $rgb["r"];
+                    } catch (Exception $e) {
+                        print "Pixel Reading Error: ".$e->getMessage()."\n";
+                        $icount += 128;
+                    }
                 }
-
             };
         };
-        $densityImg->clear();
         if ($tcount == 0) $tcount = 1;
         if ($icount == 0) $icount = 1;
         $velocity = round( ($icount / ($tcount*255)) * 127);
         return $velocity;
     }
 
-    private static function angleSort($a,$b) {
+    private static function angleSort($a,$b) { // utility function for sorting angles
         if ($a->t < $b->t) return -1;
         if ($b->t > $a->t) return 1;
         return 1;
 
     }
 
-    private static function sign ($p1, $p2, $p3) {
+    private static function sign ($p1, $p2, $p3) { //utility function for determining if a point is in a triangle
         return ($p1->x - $p3->x) * ($p2->y - $p3->y) - ($p2->x - $p3->x) * ($p1->y - $p3->y);
     }
 
-    private static function pointInTriangle ($pt, $v1, $v2, $v3) {
+    private static function pointInTriangle ($pt, $v1, $v2, $v3) { //determines if a point is in a given triangle
         $b1 = self::sign($pt, $v1, $v2) < 0.0;
         $b2 = self::sign($pt, $v2, $v3) < 0.0;
         $b3 = self::sign($pt, $v3, $v1) < 0.0;
