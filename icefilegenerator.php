@@ -15,7 +15,7 @@ define('NORTH_POLE_FILE_PREFIX','N_'); //prefix for north pole TIFF files before
 define('SOUTH_POLE_FILE_PREFIX','S_'); //prefix for south pole TIFF files before date
 define('EXTENT_SUFFIX','_extent_v2.1.tif'); //suffix for extent TIFF files
 define('CONCENTRATION_SUFFIX','_concentration_v2.1.tif'); //suffix for concentration TIFF files
-define('POTRACE_PATH','/home/lousheppard/polarproject.banff.org/potrace/potrace'); //path to potrace binary file i uploaded to hostgated
+define('POTRACE_PATH','/home/lousheppard/polarproject.banff.org/potrace/potrace'); //path to potrace binary file
 define('STARTING_YEAR',2017); //what year do you want to start collecting data?
 define('MIDI_PPQ',480); //default pulses per quarter note of .mid file generation
 define('BASE_VELOCITY',25); //lowest possible velocity setting

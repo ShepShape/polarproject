@@ -4,7 +4,11 @@ var northPolePaths,southPolePaths;
 function createSynths(err) {
     var northPole = new PolarSynth({
         fileString : "icefiles/2017/1/2017-1-1_north.json",
-        synthDefaultChannel : 1,
+        internalOrExternal: "external",
+        externalSynthChannel : 1,
+        externalSynthString: "VirtualMIDISynth #1",
+        internalSynthGMPatch: 1,
+        internalSynthInstrument: "acoustic_grand_piano",
         moveSpeed : 0.2
     });
    /** var southPole = new PolarSynth({
@@ -35,7 +39,8 @@ function drawInit() {
 
 function PolarSynth(p) {
     this.params = p;
-    this.midiOut= WebMidi.outputs[0];
+    this.externalMidiOut = (this.params.externalSynthString) ? WebMidi.getOutputByName(this.params.externalSynthString) : WebMidi.outputs[0] ;
+    this.externalMidiChannel = (this.params.externalSynthChannel) ? this.params.externalSynthChannel : 1;
     this.noteQueue = new Array();
     this.paths = new paper.Group();
     this.upSpeed = -1;
@@ -82,7 +87,12 @@ function PolarSynth(p) {
             noteDuration = data.orderedPoints[i].duration;
             noteVelocity = data.orderedPoints[i].velocity;
             self.noteQueue.push(setTimeout(function(nP,nT,nV){
-                self.midiOut.playNote(nP,self.params.synthDefaultChannel,{duration:noteDuration,velocity:noteVelocity});
+            self.noteQueue.push(setTimeout(function(nP,nT,nV){
+                if (self.params.internalOrExternal == "external") {
+                    self.externalMidiOut.playNote(nP,self.externalMidiChannel,{duration:noteDuration,velocity:noteVelocity});
+                } else {
+
+                }
                 self.drawNote(nP,nT,nV);
             },noteTime,notePitch,noteTime,noteVelocity));
         }
