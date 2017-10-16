@@ -1,5 +1,19 @@
 #polarCanvas {
-    width: 1000px;
-    height: 800px;
-    border: 1px solid black;
+    display: block;
+    width: 800px;
+    height: 100%;
+    border: none;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+body, html {
+    margin: 0px;
+    padding: 0px;
+}
+
+#stop_all {
+    display: none;
 }

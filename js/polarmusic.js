@@ -1,8 +1,8 @@
 CONSOLE_DEBUGGING = true;
-var northPolePaths,southPolePaths;
 var internalMidiReady = false;
 var externalMidiReady = false;
 var synthsCreated = false;
+var canvasWidth = 800;
 
 function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
@@ -14,12 +14,24 @@ function createSynths() {
             externalSynthString: "VirtualMIDISynth #1",
             internalSynthGMPatch: 0,
             internalSynthInstrument: "acoustic_grand_piano",
-            moveSpeed : 0.2
+            moveSpeed : 0.2,
+            whichSide : "left"
         });
-        /** var southPole = new PolarSynth({
-        fileString : "icefiles/2017/8/south_2017-8-30.json",
-        synthDefaultChannel : 2,
-    }); */
+        var southPole = new PolarSynth({
+            fileString : "icefiles/2017/1/2017-1-1_south.json",
+            internalOrExternal: "internal",
+            externalSynthChannel : 1,
+            externalSynthString: "VirtualMIDISynth #1",
+            internalSynthGMPatch: 0,
+            internalSynthInstrument: "acoustic_grand_piano",
+            moveSpeed : 0.2,
+            whichSide : "right"
+        });
+        paper.view.onFrame = function(event) {
+            if (northPole) northPole.moveUp();
+            if (southPole) southPole.moveUp();
+        }
+
         $("#stop_all").click(function() {
             northPole.stopAllNotes();
             southPole.stopAllNotes();
@@ -56,6 +68,8 @@ function PolarSynth(p) {
     this.noteQueue = new Array();
     this.paths = new paper.Group();
     this.upSpeed = -1;
+    this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
+    this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
     if (this.params.moveSpeed) this.upSpeed = 0-this.params.moveSpeed;
     this.lastNP = 0;
     this.lastVert = 0;
@@ -76,13 +90,10 @@ function PolarSynth(p) {
     this.drawNote = function(nP,nT,nV) {
         var vertPosition = (nT / 50);
         var newPath = new paper.Path();
-
-        newPath.fillColor = new paper.Color(nV/127);
-        newPath.add([0,this.lastVert]);
-        newPath.add([this.lastNP,this.lastVert]);
-        newPath.add([nP,vertPosition]);
-        newPath.add([0,vertPosition]);
-        newPath.closed = true;
+        newPath.strokeWidth = 2;
+        newPath.strokeColor = new paper.Color(nV/127);
+        newPath.add([(this.sideBase + (this.lastNP * 3 * this.horzMultiplier)),this.lastVert]);
+        newPath.add([(this.sideBase + (nP * 3 * this.horzMultiplier)),vertPosition]);
         newPath.translate(0,this.vertOffset);
         this.paths.addChild(newPath);
         this.lastVert = vertPosition;
@@ -113,13 +124,16 @@ function PolarSynth(p) {
         setTimeout(self.resetSynth,(noteTime+noteDuration));
     }
 
-    paper.view.onFrame = function(event) {
-           self.paths.translate([0,self.upSpeed]);
-           self.vertOffset += self.upSpeed;
+    this.moveUp = function() {
+        self.paths.translate([0,self.upSpeed]);
+        self.vertOffset += self.upSpeed;
     }
+
 
     $.getJSON(this.params.fileString, function(data) {self.startMusic(data)});
 }
+
+
 
 
 $(function() {

@@ -6,7 +6,7 @@
 ini_set('MAX_EXECUTION_TIME', -1);
 ini_set('MAX_INPUT_TIME', -1);
 set_time_limit(0);
-require('./php/midi/midi.class.php'); //include the MIDI library for .mid file generation
+
 
 define('NSIDC_SERVER','sidads.colorado.edu'); //hostname of the NSIDC FTP server
 define('NORTH_POLE_DATA_PATH','DATASETS/NOAA/G02135/north/daily/geotiff'); //path to north pole TIFF files
@@ -15,14 +15,17 @@ define('NORTH_POLE_FILE_PREFIX','N_'); //prefix for north pole TIFF files before
 define('SOUTH_POLE_FILE_PREFIX','S_'); //prefix for south pole TIFF files before date
 define('EXTENT_SUFFIX','_extent_v2.1.tif'); //suffix for extent TIFF files
 define('CONCENTRATION_SUFFIX','_concentration_v2.1.tif'); //suffix for concentration TIFF files
-define('POTRACE_PATH','/home/lousheppard/polarproject.banff.org/potrace/potrace'); //path to potrace binary file
+define('BASE_PATH','/home/lousheppard/polarproject.banff.org/'); //base path
+define('POTRACE_PATH','potrace/potrace'); //path to potrace binary file
 define('STARTING_YEAR',2017); //what year do you want to start collecting data?
 define('MIDI_PPQ',480); //default pulses per quarter note of .mid file generation
 define('BASE_VELOCITY',25); //lowest possible velocity setting
 define('ICE_FILES_PATH','icefiles'); //path to ice file hierarchy, included density image (JPEG), extent SVG, .mid files and .json files
-define('REGENERATE_FILES',true); // should we regenerate all files each time or only generate files that we don't already have?
+define('REGENERATE_FILES',false); // should we regenerate all files each time or only generate files that we don't already have?
+define('MAXIMUM_FILE_COUNT',10); // maximum file count to prevent a bug in imagick
 define('ONE_DAY_ONLY',false); //should we generate one set of files only? this is good for testing or if you want to go fast
 define('POINT_DEBUG',false); //should we generate one set of files only? this is good for testing or if you want to go fast
+require(BASE_PATH.'php/midi/midi.class.php'); //include the MIDI library for .mid file generation
 
 $GLOBALS["northPoleMIDIParams"] = (object) [
     whichPole => "north", //indicates which pole we're dealing with
@@ -53,9 +56,10 @@ class PolarProject
 {
 
     public static function checkForIceFiles() { //function that goes through all the files on the remote NSIDC server to get them
+        $fileCount = 0; //set a file count to exit to prevent a bug
         if (REGENERATE_FILES) { //are we going to regenerate the whole thing from scratch -- if there is a significant parameter or programming change we may want to
-            exec('rm -rf icefiles'); //recursively delete the entire icefiles direectory
-            mkdir('icefiles'); //recreate it
+            exec('rm -rf '.BASE_PATH.'icefiles'); //recursively delete the entire icefiles direectory
+            mkdir(BASE_PATH.'icefiles'); //recreate it
         }
         $yesterday = time() - (48 * 60 * 60); // get the time 2 days ago -- this is the last day we want to grab;
         $lastYear = intval(date('Y',$yesterday)); // get the last year based on $yesterday
@@ -66,12 +70,12 @@ class PolarProject
         $firstDay = (ONE_DAY_ONLY) ? $lastDay : 1; //first day should be Jan 1 of  starting year constant unless we go for one day only in which case it's same as last day
         for ($y=$firstYear;$y<=$lastYear;$y++) { // iterate over the years starting with STARTING_YEAR
             $lastMonthInYear = ($y==$lastYear) ? $lastMonth : 12; //last month is usually December but on the current year it's whatever $yesterday's month was since we end at $yesterday
-            if (!file_exists(ICE_FILES_PATH."/".$y)) mkdir(ICE_FILES_PATH."/".$y); // create a directory for the year if it doesn't exist
+            if (!file_exists(BASE_PATH.ICE_FILES_PATH."/".$y)) mkdir(BASE_PATH.ICE_FILES_PATH."/".$y); // create a directory for the year if it doesn't exist
             for ($m=$firstMonth;$m<=$lastMonthInYear;$m++) { //iterate over the months in the year from the outer loop
                 $lastDayInMonth = (($y==$lastYear) && ($m==$lastMonthInYear)) ? $lastDay : cal_days_in_month(CAL_GREGORIAN,$m,$y); //last day of the month is either the last day of this calendar month or $yesterday's day if we've come up to the present
-                if (!file_exists(ICE_FILES_PATH."/".$y."/".$m)) mkdir(ICE_FILES_PATH."/".$y."/".$m); // create a directory for the month if it doesn't exist
+                if (!file_exists(BASE_PATH.ICE_FILES_PATH."/".$y."/".$m)) mkdir(BASE_PATH.ICE_FILES_PATH."/".$y."/".$m); // create a directory for the month if it doesn't exist
                 for ($d=$firstDay;$d<=$lastDayInMonth;$d++) { //iterate over the days in the month from the outer loop
-                    if (!file_exists("./".ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_south.json")) {
+                    if (!file_exists(BASE_PATH.ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_south.json")) {
                         if (POINT_DEBUG) print "Processing";
                         $startTime = time();
                         print "Starting ".$y."-".$m."-".$d."...";
@@ -79,6 +83,13 @@ class PolarProject
                         $endTime = time();
                         if (POINT_DEBUG) print "\n";
                         print "Converted ".$y."-".$m."-".$d." in ".($endTime-$startTime)." seconds.\n";
+                        $fileCount++;
+                    } else {
+                        print "Skipping ".$y."-".$m."-".$d." because files exist.\n";
+                    }
+                    if ($fileCount > MAXIMUM_FILE_COUNT) {
+                        print "Reached maximum file count to avoid imagick bug -- try a restart!";
+                        exit;
                     }
                 }
             }
@@ -127,8 +138,8 @@ class PolarProject
         curl_exec($curl_south_density); //run CURL
         curl_close($curl_south_density); //finish CURL
         fclose($tmpSPDensityHandle); //close the file handle
-        $northFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_north"; //north file naming convention - same for density image, extent SVG, JSON and .MID file
-        $southFileOutputName = "./".ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_south"; // south file naming convention
+        $northFileOutputName = BASE_PATH.ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_north"; //north file naming convention - same for density image, extent SVG, JSON and .MID file
+        $southFileOutputName = BASE_PATH.ICE_FILES_PATH."/".$y."/".$m."/".$y."-".$m."-".$d."_south"; // south file naming convention
         self::convertImageFiles($tmpNPExtentTiff,$tmpNPDensityTiff, $northFileOutputName,true); //convert the north pole extent and density files
         self::convertImageFiles($tmpSPExtentTiff,$tmpSPDensityTiff, $southFileOutputName,false); //convert the south pole extent and density files
         unlink($tmpNPExtentTiff); //delete temp TIFF files -- we no longer need them
@@ -167,8 +178,8 @@ class PolarProject
             $densityImg->setImageFormat('png');
             $densityImg->writeImage("png24:".$outputName.".png"); // write out the BMP to disk
             $densityImg->clear(); //destroy the imagemagick resource
-            $potraceSVGCommand = POTRACE_PATH." ".$tmpExtentBMP."  -b svg  -n -a 0 -t 0 -O 0 -u 100 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
-            $potraceJSONCommand = POTRACE_PATH." ".$tmpExtentBMP." -b geojson -n -a 0 -t 0 -O 0 -u 100 -o ".$tmpGeoJSON; // define a potrace command again to generate a temporary GeoJSON file to parse MIDI
+            $potraceSVGCommand = BASE_PATH.POTRACE_PATH." ".$tmpExtentBMP."  -b svg  -n -a 0 -t 0 -O 0 -u 100 -o ".$outputName.".svg"; //define a potrace command to generate an SVG we can use in the browser as a visual if we want
+            $potraceJSONCommand = BASE_PATH.POTRACE_PATH." ".$tmpExtentBMP." -b geojson -n -a 0 -t 0 -O 0 -u 100 -o ".$tmpGeoJSON; // define a potrace command again to generate a temporary GeoJSON file to parse MIDI
             exec($potraceSVGCommand); //run the first potrace command
             exec($potraceJSONCommand); // run the second potrace command
             if ($isNorth) self::generateMIDI($tmpGeoJSON,$GLOBALS["northPoleMIDIParams"],$outputName);
