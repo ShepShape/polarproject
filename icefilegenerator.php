@@ -14,7 +14,7 @@ define('SOUTH_POLE_DATA_PATH','DATASETS/NOAA/G02135/south/daily/geotiff'); //pat
 define('NORTH_POLE_FILE_PREFIX','N_'); //prefix for north pole TIFF files before date
 define('SOUTH_POLE_FILE_PREFIX','S_'); //prefix for south pole TIFF files before date
 define('EXTENT_SUFFIX','_extent_v3.0.tif'); //suffix for extent TIFF files
-define('CONCENTRATION_SUFFIX','_concentration_v3.0 vbc  .tif'); //suffix for concentration TIFF files
+define('CONCENTRATION_SUFFIX','_concentration_v3.0.tif'); //suffix for concentration TIFF files
 define('BASE_PATH','/home/lousheppard/polarproject.banff.org/'); //base path
 define('POTRACE_PATH','potrace/potrace'); //path to potrace binary file
 define('STARTING_YEAR',1990); //what year do you want to start collecting data?
