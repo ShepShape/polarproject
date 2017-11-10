@@ -1,4 +1,7 @@
 CONSOLE_DEBUGGING = true;
+LOAD_EXTERNAL_MIDI = false;
+
+
 var internalMidiReady = false;
 var externalMidiReady = false;
 var synthsCreated = false;
@@ -8,7 +11,7 @@ function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
         synthsCreated = true;
         var northPole = new PolarSynth({
-            fileString : "icefiles/2017/1/2017-1-1_north.json",
+            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDay()+"_north.json",
             internalOrExternal: "internal",
             externalSynthChannel : 1,
             externalSynthString: "VirtualMIDISynth #1",
@@ -18,7 +21,7 @@ function createSynths() {
             whichSide : "left"
         });
         var southPole = new PolarSynth({
-            fileString : "icefiles/2017/1/2017-1-1_south.json",
+            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDay()+"_south.json",
             internalOrExternal: "internal",
             externalSynthChannel : 1,
             externalSynthString: "VirtualMIDISynth #1",
@@ -33,8 +36,8 @@ function createSynths() {
         }
 
         $("#stop_all").click(function() {
-            northPole.stopAllNotes();
-            southPole.stopAllNotes();
+            northPole.resetSynth();
+            southPole.resetSynth();
         });
     } else {
         setTimeout(createSynths,500);
@@ -62,8 +65,11 @@ function drawInit() {
 
 function PolarSynth(p) {
     this.params = p;
-    this.externalMidiOut = (this.params.hasOwnProperty("externalSynthString")) ? WebMidi.getOutputByName(this.params.externalSynthString) : WebMidi.outputs[0] ;
-    this.externalMidiChannel = (this.params.hasOwnProperty("externalSynthChannel")) ? this.params.externalSynthChannel : 1;
+    debug("playing: "+p.fileString);
+    if (LOAD_EXTERNAL_MIDI) {
+        this.externalMidiOut = (this.params.hasOwnProperty("externalSynthString")) ? WebMidi.getOutputByName(this.params.externalSynthString) : WebMidi.outputs[0];
+        this.externalMidiChannel = (this.params.hasOwnProperty("externalSynthChannel")) ? this.params.externalSynthChannel : 1;
+    }
     this.internalMidiChannel = (this.params.hasOwnProperty("internalSynthGMPatch")) ?this.params.internalSynthGMPatch : 0;
     this.noteQueue = new Array();
     this.paths = new paper.Group();
@@ -84,7 +90,19 @@ function PolarSynth(p) {
     }
 
     this.resetSynth = function() {
+        this.stopAllNotes();
         debug('the end');
+        this.paths.translate([0,(0-this.vertOffset)]);
+        this.paths.removeChildren();
+        this.noteQueue = new Array();
+        this.upSpeed = -1;
+        this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
+        this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
+        if (this.params.moveSpeed) this.upSpeed = 0-this.params.moveSpeed;
+        this.lastNP = 0;
+        this.lastVert = 0;
+        this.vertOffset = 0;
+        $.getJSON(this.params.fileString, function(data) {self.startMusic(data)});
     }
 
     this.drawNote = function(nP,nT,nV) {
@@ -129,7 +147,6 @@ function PolarSynth(p) {
         self.vertOffset += self.upSpeed;
     }
 
-
     $.getJSON(this.params.fileString, function(data) {self.startMusic(data)});
 }
 
@@ -139,17 +156,20 @@ function PolarSynth(p) {
 $(function() {
     var canvas = $("#polarCanvas")[0];
     paper.setup(canvas);
-    WebMidi.enable(function() {
-        debug('external MIDI subsystem loaded');
-        externalMidiReady = true;
-        createSynths();
+    if (LOAD_EXTERNAL_MIDI) {
+        WebMidi.enable(function() {
+            debug('external MIDI subsystem loaded');
+            externalMidiReady = true;
+            createSynths();
 
-    });
+        });
+    } else {
+        externalMidiReady = true;
+    }
     MIDI.loadPlugin({
         soundfontUrl: "./soundfont/",
         instrument: "acoustic_grand_piano",
         onprogress: function(state, progress) {
-            debug(state+" "+progress);
         },
         onsuccess: function() {
             debug('internal MIDI subsystem loaded');
