@@ -26,6 +26,7 @@ body, html {
     background-image: url("../images/main.svg");
     background-repeat: no-repeat;
     background-position: 0px 0px;
+    display: none;
 }
 
 #intro h1 {
@@ -51,7 +52,7 @@ body, html {
     font-weight: normal;
     color: black;
     font-size: 12px;
-    width: 400px;
+    width: 450px;
     cursor: default;
 }
 
@@ -73,6 +74,10 @@ body, html {
 }
 
 #intro button {
+    width: 200px;
+}
+
+#intro input {
     width: 200px;
 }
 

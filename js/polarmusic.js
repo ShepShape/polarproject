@@ -1,4 +1,4 @@
-CONSOLE_DEBUGGING = true;
+CONSOLE_DEBUGGING = false;
 LOAD_EXTERNAL_MIDI = false;
 
 
@@ -11,7 +11,7 @@ function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
         synthsCreated = true;
         var northPole = new PolarSynth({
-            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDay()+"_north.json",
+            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate()+"_north.json",
             internalOrExternal: "internal",
             externalSynthChannel : 1,
             externalSynthString: "VirtualMIDISynth #1",
@@ -21,7 +21,7 @@ function createSynths() {
             whichSide : "left"
         });
         var southPole = new PolarSynth({
-            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDay()+"_south.json",
+            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate()+"_south.json",
             internalOrExternal: "internal",
             externalSynthChannel : 1,
             externalSynthString: "VirtualMIDISynth #1",
@@ -44,9 +44,18 @@ function createSynths() {
                     $("#intro").fadeTo("slow",0.1);
                 });
             });
+
             northPole.startSynth($(".date-input").datepicker("getDate"),"north");
             southPole.startSynth($(".date-input").datepicker("getDate"),"south");
         });
+        if (isInstallation) {
+            debug('Installation Version');
+            northPole.startSynth($(".date-input").datepicker("getDate"),"north");
+            southPole.startSynth($(".date-input").datepicker("getDate"),"south");
+        } else {
+            debug('Web Version');
+            $("#intro").fadeIn("slow");
+        }
     } else {
         setTimeout(createSynths,500);
     }
@@ -65,10 +74,6 @@ function drawInit() {
     northPolePaths = new Array();
     southPoleSouths = new Array();
 }
-
-
-
-
 
 
 function PolarSynth(p) {
@@ -146,7 +151,7 @@ function PolarSynth(p) {
                 self.drawNote(nP,nT,nV);
             },noteTime,notePitch,noteTime,noteVelocity));
         }
-        setTimeout(self.resetSynth,(noteTime+noteDuration));
+        if (isInstallation) setTimeout(self.startSynth,(noteTime+noteDuration));
     }
 
     this.moveUp = function() {
@@ -161,6 +166,16 @@ function PolarSynth(p) {
 
 $(function() {
     $(".date-input").val(currentDate.getFullYear()+"-"+("0" + (currentDate.getMonth()+1)).slice(-2)+"-"+("0" + currentDate.getDate()).slice(-2));
+    $("#get_midi_north").click(function() {
+        whichDate = $(".date-input").datepicker("getDate");
+        var fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDate()+"_north.mid";
+        document.location.href=fileString;
+    });
+    $("#get_midi_south").click(function() {
+        whichDate = $(".date-input").datepicker("getDate");
+        var fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDate()+"_south.mid";
+        document.location.href=fileString;
+    });
     var canvas = $("#polarCanvas")[0];
     paper.setup(canvas);
     if (LOAD_EXTERNAL_MIDI) {

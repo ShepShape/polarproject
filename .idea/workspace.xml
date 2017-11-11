@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fd34e83-c656-4456-930f-cc0ca9f34b7e" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/jquery-3.2.1.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.htaccess" afterPath="$PROJECT_DIR$/.htaccess" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/polarproject.css" afterPath="$PROJECT_DIR$/css/polarproject.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/polarmusic.js" afterPath="$PROJECT_DIR$/js/polarmusic.js" />
@@ -22,18 +20,30 @@
       <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="812">
-              <caret line="74" column="20" lean-forward="false" selection-start-line="74" selection-start-column="20" selection-end-line="74" selection-end-column="20" />
+            <state relative-caret-position="225">
+              <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+              <folding>
+                <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="polarmusic.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="966">
+              <caret line="50" column="21" lean-forward="false" selection-start-line="50" selection-start-column="12" selection-end-line="50" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="polarmusic.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
+      <file leaf-file-name=".htaccess" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.htaccess">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="99" column="195" lean-forward="false" selection-start-line="99" selection-start-column="195" selection-end-line="99" selection-end-column="195" />
+            <state relative-caret-position="125">
+              <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -49,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="polarproject.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="polarproject.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/polarproject.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="907">
-              <caret line="58" column="20" lean-forward="false" selection-start-line="58" selection-start-column="20" selection-end-line="58" selection-end-column="20" />
+            <state relative-caret-position="132">
+              <caret line="28" column="18" lean-forward="false" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -71,8 +81,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>console</find>
-      <find>midiOutput</find>
       <find>Extent</find>
       <find>print</find>
       <find>potrace</find>
@@ -95,11 +103,13 @@
       <find>BASEPATH</find>
       <find>WebMidi</find>
       <find>stop_all</find>
-      <find>debug</find>
       <find>date-input-css</find>
       <find>playing</find>
       <find>fast</find>
       <find>(!file_exists(BASE_PATH.ICE_FILES_PATH.&quot;/&quot;.$y.&quot;/&quot;.$m.&quot;/&quot;.$y.&quot;-&quot;.$m.&quot;-&quot;.$d.&quot;_south.json&quot;))</find>
+      <find>debug</find>
+      <find>getQuery</find>
+      <find>isInstall</find>
       <find>.val</find>
     </findStrings>
     <replaceStrings>
@@ -114,6 +124,7 @@
       <replace>_density</replace>
       <replace>Density</replace>
       <replace>BASE_PATH</replace>
+      <replace>isInstallation</replace>
       <replace>date-input</replace>
     </replaceStrings>
   </component>
@@ -128,14 +139,14 @@
         <option value="$PROJECT_DIR$/mididownload.php" />
         <option value="$PROJECT_DIR$/phpinfo.php" />
         <option value="$PROJECT_DIR$/config.json" />
-        <option value="$PROJECT_DIR$/.htaccess" />
         <option value="$PROJECT_DIR$/lights.php" />
         <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/test.php" />
         <option value="$PROJECT_DIR$/icefilegenerator.php" />
+        <option value="$PROJECT_DIR$/css/polarproject.css" />
+        <option value="$PROJECT_DIR$/.htaccess" />
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/js/polarmusic.js" />
-        <option value="$PROJECT_DIR$/css/polarproject.css" />
       </list>
     </option>
   </component>
@@ -385,12 +396,12 @@
       <workItem from="1508192351159" duration="8790000" />
       <workItem from="1509391650746" duration="2406000" />
       <workItem from="1510344029333" duration="5698000" />
-      <workItem from="1510432146578" duration="6413000" />
+      <workItem from="1510432146578" duration="8948000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182967000" />
+    <option name="totallyTimeSpent" value="185502000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="381" y="55" width="3250" height="1996" extended-state="0" />
@@ -449,7 +460,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="24" column="29" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="24" selection-end-column="29" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -474,7 +487,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="24" column="29" lean-forward="true" selection-start-line="22" selection-start-column="12" selection-end-line="24" selection-end-column="29" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -499,7 +514,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -522,7 +539,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -545,7 +564,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -568,7 +589,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -583,7 +606,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -598,7 +623,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -613,7 +640,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
-          <folding />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -646,13 +675,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.html" />
-    <entry file="file://$PROJECT_DIR$/.htaccess">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" column="51" lean-forward="false" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/midi/build/MIDI.js" />
     <entry file="file://$PROJECT_DIR$/lights.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -685,14 +707,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="812">
-          <caret line="74" column="20" lean-forward="false" selection-start-line="74" selection-start-column="20" selection-end-line="74" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/icefilegenerator.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="369">
@@ -701,18 +715,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
+    <entry file="file://$PROJECT_DIR$/.htaccess">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="99" column="195" lean-forward="false" selection-start-line="99" selection-start-column="195" selection-end-line="99" selection-end-column="195" />
+        <state relative-caret-position="125">
+          <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/polarproject.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="907">
-          <caret line="58" column="20" lean-forward="false" selection-start-line="58" selection-start-column="20" selection-end-line="58" selection-end-column="20" />
+        <state relative-caret-position="132">
+          <caret line="28" column="18" lean-forward="false" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding>
+            <marker date="1510442051824" expanded="true" signature="4291:4766" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="966">
+          <caret line="50" column="21" lean-forward="false" selection-start-line="50" selection-start-column="12" selection-end-line="50" selection-end-column="21" />
           <folding />
         </state>
       </provider>

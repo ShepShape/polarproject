@@ -5,6 +5,9 @@
  * Date: 2017-07-21
  * Time: 11:04 AM
  */
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 define('BASE_PATH','/home/lousheppard/polarproject.banff.org/'); //base path
 define('ICE_FILES_PATH','icefiles'); //path to ice file hierarchy, included density image (JPEG), extent SVG, .mid files and .json files
 $firstTime = mktime(0,0,0,1,1,1990);
@@ -24,8 +27,12 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     <script>
     var currentDate = new Date((<?php print $currentTime; ?>*1000));
     var firstDate = new Date((<?php print $firstTime; ?>*1000));
-
+    var isInstallation = <?php print ($_REQUEST['install'] == 'true') ? "true" : "false"; ?>;
+    setTimeout(function() {
+        location.reload();
+    },(1000 * 60 * 60 * 24));
     </script>
+    <base href="http://polarproject.banff.org/">
     <link rel="stylesheet" type="text/css" href="css/polarproject.css">
     <link rel="stylesheet"  href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.datepicker.css" />
@@ -73,7 +80,8 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
             <p>For more information on Requiem for the Polar Regions please contact Lou Sheppard at <a href="mailto:lou@lousheppard.com">lou@lousheppard.com</a></p>
         <button id="listen_today" data-role="none">Listen to the Score for this day: </button> <input type="text" class="date-input"  data-role="none" >
         <br /><br />
-        <button id="get_midi" data-role="none">Download a MIDI file for this score</button>
+        <button id="get_midi_north" data-role="none">Download this North MIDI file</button>
+        <button id="get_midi_south" data-role="none">Download this South MIDI file</button>
     </div>
 </div>
 <canvas id="polarCanvas" resize></canvas>
