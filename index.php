@@ -49,7 +49,8 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     <script src="js/midi/plugin.webmidi.js" type="text/javascript"></script>
     <script src="js/midi/dom_request_xhr.js" type="text/javascript"></script>
     <script src="js/midi/dom_request_script.js" type="text/javascript"></script>
-    <script src="js/midi/webmidi.min.js"></script>
+    <!--enable the following line and the LOAD_EXTERNAL_MIDI variable to use an external softsynth -->
+    <!--<script src="js/midi/webmidi.min.js"></script>-->
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="js/datepicker.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
