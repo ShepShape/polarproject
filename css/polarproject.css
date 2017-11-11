@@ -14,8 +14,65 @@ body, html {
     padding: 0px;
 }
 
-#stop_all {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+
+#intro {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -300px;
+    width: 600px;
+    height: 800px;
+    background-image: url("../images/main.svg");
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
 }
+
+#intro h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    position: absolute;
+    top: 30px;
+    left: 5px;
+    text-transform: uppercase;
+    font-weight: normal;
+    color: black;
+    font-size: 30px;
+    width: 400px;
+    cursor: default;
+}
+
+#intro #description {
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    position: absolute;
+    top: 80px;
+    left: 160px;
+    font-weight: normal;
+    color: black;
+    font-size: 12px;
+    width: 400px;
+    cursor: default;
+}
+
+#intro #description p {
+    cursor: default;
+}
+
+#intro #description a {
+    text-decoration: none;
+    color: #10635f;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
+}
+#intro #description a:hover {
+    color: #999;
+}
+
+#intro button {
+    width: 200px;
+}
+

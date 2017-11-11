@@ -35,9 +35,17 @@ function createSynths() {
             if (southPole) southPole.moveUp();
         }
 
-        $("#stop_all").click(function() {
-            northPole.resetSynth();
-            southPole.resetSynth();
+        $("#listen_today").click(function() {
+            $("#intro").fadeTo("slow",0.1,function() {
+                $("#intro").mouseenter(function(){
+                    $("#intro").fadeTo("slow",1.0);
+                });
+                $("#intro").mouseleave(function(){
+                    $("#intro").fadeTo("slow",0.1);
+                });
+            });
+            northPole.startSynth($(".date-input").datepicker("getDate"),"north");
+            southPole.startSynth($(".date-input").datepicker("getDate"),"south");
         });
     } else {
         setTimeout(createSynths,500);
@@ -65,7 +73,6 @@ function drawInit() {
 
 function PolarSynth(p) {
     this.params = p;
-    debug("playing: "+p.fileString);
     if (LOAD_EXTERNAL_MIDI) {
         this.externalMidiOut = (this.params.hasOwnProperty("externalSynthString")) ? WebMidi.getOutputByName(this.params.externalSynthString) : WebMidi.outputs[0];
         this.externalMidiChannel = (this.params.hasOwnProperty("externalSynthChannel")) ? this.params.externalSynthChannel : 1;
@@ -89,9 +96,9 @@ function PolarSynth(p) {
         }
     }
 
-    this.resetSynth = function() {
+    this.startSynth = function(whichDate,northOrSouth) {
+        var fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDay()+"_"+northOrSouth+".json";
         this.stopAllNotes();
-        debug('the end');
         this.paths.translate([0,(0-this.vertOffset)]);
         this.paths.removeChildren();
         this.noteQueue = new Array();
@@ -102,7 +109,7 @@ function PolarSynth(p) {
         this.lastNP = 0;
         this.lastVert = 0;
         this.vertOffset = 0;
-        $.getJSON(this.params.fileString, function(data) {self.startMusic(data)});
+        $.getJSON( fileString , function(data) {self.startMusic(data)});
     }
 
     this.drawNote = function(nP,nT,nV) {
@@ -147,13 +154,13 @@ function PolarSynth(p) {
         self.vertOffset += self.upSpeed;
     }
 
-    $.getJSON(this.params.fileString, function(data) {self.startMusic(data)});
 }
 
 
 
 
 $(function() {
+    $(".date-input").val(currentDate.getFullYear()+"-"+("0" + (currentDate.getMonth()+1)).slice(-2)+"-"+("0" + currentDate.getDate()).slice(-2));
     var canvas = $("#polarCanvas")[0];
     paper.setup(canvas);
     if (LOAD_EXTERNAL_MIDI) {
@@ -174,6 +181,7 @@ $(function() {
         onsuccess: function() {
             debug('internal MIDI subsystem loaded');
             internalMidiReady = true;
+            $(".date-input").datepicker({minDate:firstDate, maxDate:currentDate,defaultDate:currentDate,dateFormat:"yy-mm-dd"});
             createSynths();
         }
     });

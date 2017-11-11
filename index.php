@@ -27,6 +27,9 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
 
     </script>
     <link rel="stylesheet" type="text/css" href="css/polarproject.css">
+    <link rel="stylesheet"  href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.datepicker.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.datepicker.theme.css" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <script src="js/midi/Base64.js" type="text/javascript"></script>
     <script src="js/midi/Base64binary.js" type="text/javascript"></script>
@@ -40,15 +43,39 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     <script src="js/midi/dom_request_xhr.js" type="text/javascript"></script>
     <script src="js/midi/dom_request_script.js" type="text/javascript"></script>
     <script src="js/midi/webmidi.min.js"></script>
-    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="js/datepicker.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/jquery.mobile.datepicker.js"></script>
     <script src="js/paper/paper-full.js"></script>
     <script src="js/polarmusic.js"></script>
 
 
 </head>
 <body>
-
+<div id="intro">
+    <h1>Requiem For The Polar Regions</h1>
+    <div id="description">
+        <p>is an aural record of the shifting masses of sea ice in the Arctic and Antarctic oceans,
+        both the annual melt and reformation of ice, and the long term decline of ice in the Arctic. Using the data
+        provided by the National Snow and Ice Data Centre in Colorado this automated program generates
+        a musical score based on the perimeter and concentration of sea ice in the Arctic and Antarctic.
+        The program maps the coordinates of the ice imagery to a musical scale, generating a distinct composition each day.
+        Ice which reaches further from the poles sounds as lower notes, while ice that sits closer to the pole sounds as higher notes. The score is
+        composed in D Minor.</p>
+        <p>You can listen to the present day's score or can choose a past date to listen to. The program produces scores based on all available daily data
+        from the National Snow and Ice Data Centre, which stretches as far back as 1990. Each composition is approximately 15 minutes long.
+        On screen you will see an animation which traces the contour and density of the sea ice as each note is played. The right side of the animation shows
+            the counter of Arctic ice, while the left side shows the Antarctic Ice.</p>
+        <p>Requiem fort the Polar regions was produced with support from the Hnatyshyn Foundation, THe Harrison McCain Foundation and Arts Nova Scotia, while
+        Lou Sheppard was the 2017 Emerging Atlantic Artist in Residence at Banff Centre for Arts and Creativity. The project was conceived of by Loud Sheppard and programmed
+        with the assistance of Kenny Lozowski. The project exists as an online installation, a gallery installation and a series of live performances.</p>
+            <p>For more information on Requiem for the Polar Regions please contact Lou Sheppard at <a href="mailto:lou@lousheppard.com">lou@lousheppard.com</a></p>
+        <button id="listen_today" data-role="none">Listen to the Score for this day: </button> <input type="text" class="date-input"  data-role="none" >
+        <br /><br />
+        <button id="get_midi" data-role="none">Download a MIDI file for this score</button>
+    </div>
+</div>
 <canvas id="polarCanvas" resize></canvas>
-<button id="stop_all">Reset Synth</button>
 </body>
 </html>
