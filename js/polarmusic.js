@@ -102,7 +102,7 @@ function PolarSynth(p) {
     }
 
     this.startSynth = function(whichDate,northOrSouth) {
-        var fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDay()+"_"+northOrSouth+".json";
+        var fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDate()+"_"+northOrSouth+".json";
         this.stopAllNotes();
         this.paths.translate([0,(0-this.vertOffset)]);
         this.paths.removeChildren();
