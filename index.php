@@ -66,7 +66,7 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     <div id="description">
         <p>is an aural record of the shifting masses of sea ice in the Arctic and Antarctic oceans,
         both the annual melt and reformation of ice, and the long term decline of ice in the Arctic. Using the data
-        provided by the National Snow and Ice Data Centre in Colorado this automated program generates
+            provided by the <a href="http://nsidc.org/arcticseaicenews/">National Snow and Ice Data Centre</a> in Colorado this automated program generates
         a musical score based on the perimeter and concentration of sea ice in the Arctic and Antarctic.
         The program maps the coordinates of the ice imagery to a musical scale, generating a distinct composition each day.
         Ice which reaches further from the poles sounds as lower notes, while ice that sits closer to the pole sounds as higher notes. The score is
@@ -74,11 +74,11 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
         <p>You can listen to the present day's score or can choose a past date to listen to. The program produces scores based on all available daily data
         from the National Snow and Ice Data Centre, which stretches as far back as 1990. Each composition is approximately 15 minutes long.
         On screen you will see an animation which traces the contour and density of the sea ice as each note is played. The right side of the animation shows
-            the counter of Arctic ice, while the left side shows the Antarctic Ice.</p>
-        <p>Requiem fort the Polar regions was produced with support from the Hnatyshyn Foundation, THe Harrison McCain Foundation and Arts Nova Scotia, while
-        Lou Sheppard was the 2017 Emerging Atlantic Artist in Residence at Banff Centre for Arts and Creativity. The project was conceived of by Loud Sheppard and programmed
+            the contour of Arctic ice, while the left side shows the Antarctic Ice.</p>
+        <p>Requiem fort the Polar regions was produced with support from the Hnatyshyn Foundation, The Harrison McCain Foundation and Arts Nova Scotia, while
+        Lou Sheppard was the 2017 Emerging Atlantic Artist in Residence at Banff Centre for Arts and Creativity. The project was conceived of by <a href="http://lousheppard.com/">Lou Sheppard</a> and programmed
         with the assistance of Kenny Lozowski. The project exists as an online installation, a gallery installation and a series of live performances.</p>
-            <p>For more information on Requiem for the Polar Regions please contact Lou Sheppard at <a href="mailto:lou@lousheppard.com">lou@lousheppard.com</a></p>
+        <p>For more information on Requiem for the Polar Regions please contact Lou Sheppard at <a href="mailto:lou@lousheppard.com">lou@lousheppard.com</a></p>
         <button id="listen_today" data-role="none">Listen to the Score for this day: </button> <input type="text" class="date-input"  data-role="none" >
         <br /><br />
         <button id="get_midi_north" data-role="none">Download this North MIDI file</button>

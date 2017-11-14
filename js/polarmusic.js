@@ -36,12 +36,12 @@ function createSynths() {
         }
 
         $("#listen_today").click(function() {
-            $("#intro").fadeTo("slow",0.1,function() {
+            $("#intro").fadeTo("slow",0.0,function() {
                 $("#intro").mouseenter(function(){
                     $("#intro").fadeTo("slow",1.0);
                 });
                 $("#intro").mouseleave(function(){
-                    $("#intro").fadeTo("slow",0.1);
+                    $("#intro").fadeTo("slow",0.0);
                 });
             });
 
