@@ -15,16 +15,17 @@ define('NORTH_POLE_FILE_PREFIX','N_'); //prefix for north pole TIFF files before
 define('SOUTH_POLE_FILE_PREFIX','S_'); //prefix for south pole TIFF files before date
 define('EXTENT_SUFFIX','_extent_v3.0.tif'); //suffix for extent TIFF files
 define('CONCENTRATION_SUFFIX','_concentration_v3.0.tif'); //suffix for concentration TIFF files
-define('BASE_PATH','/home/lousheppard/polarproject.banff.org/'); //base path
+define('BASE_PATH','/home/loursheppard/polarregions.net/installation/'); //base path
 define('POTRACE_PATH','potrace/potrace'); //path to potrace binary file
 define('STARTING_YEAR',1990); //what year do you want to start collecting data?
 define('MIDI_PPQ',480); //default pulses per quarter note of .mid file generation
 define('BASE_VELOCITY',25); //lowest possible velocity setting
 define('ICE_FILES_PATH','icefiles'); //path to ice file hierarchy, included density image (JPEG), extent SVG, .mid files and .json files
 define('REGENERATE_FILES',false); // should we regenerate all files each time or only generate files that we don't already have?
-define('MAXIMUM_FILE_COUNT',10); // maximum file count to prevent a bug in imagick
+define('MAXIMUM_FILE_COUNT',8); // maximum file count to prevent a bug in imagick
 define('ONE_DAY_ONLY',false); //should we generate one set of files only? this is good for testing or if you want to go fast
 define('POINT_DEBUG',false); //individual point debug info
+define('SHOW_SKIPPED_FILES',false); //show which files are getting skipped
 require(BASE_PATH.'php/midi/midi.class.php'); //include the MIDI library for .mid file generation
 
 $GLOBALS["northPoleMIDIParams"] = (object) [
@@ -57,6 +58,7 @@ class PolarProject
 
     public static function checkForIceFiles() { //function that goes through all the files on the remote NSIDC server to get them
         $fileCount = 0; //set a file count to exit to prevent a bug
+        print "\n\nBeginning file run at ".date("Y-m-d h:i:sa")."\n";
         if (REGENERATE_FILES) { //are we going to regenerate the whole thing from scratch -- if there is a significant parameter or programming change we may want to -- caution, this can take a month!
             exec('rm -rf '.BASE_PATH.'icefiles'); //recursively delete the entire icefiles direectory
             mkdir(BASE_PATH.'icefiles'); //recreate it
@@ -85,7 +87,7 @@ class PolarProject
                         print "Converted ".$y."-".$m."-".$d." in ".($endTime-$startTime)." seconds.\n";
                         $fileCount++;
                     } else {
-                        print "Skipping ".$y."-".$m."-".$d." because files exist.\n";
+                        if (SHOW_SKIPPED_FILES) print "Skipping ".$y."-".$m."-".$d." because files exist.\n";
                     }
                     if ($fileCount > MAXIMUM_FILE_COUNT) {
                         print "Reached maximum file count to avoid imagick bug -- try a restart!";

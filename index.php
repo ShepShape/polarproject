@@ -8,7 +8,7 @@
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-define('BASE_PATH','/home/lousheppard/polarproject.banff.org/'); //base path
+define('BASE_PATH','/home/loursheppard/polarregions.net/installation/'); //base path
 define('ICE_FILES_PATH','icefiles'); //path to ice file hierarchy, included density image (JPEG), extent SVG, .mid files and .json files
 $firstTime = mktime(0,0,0,1,1,1990);
 $nowTime = time();
@@ -32,7 +32,7 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
         location.reload();
     },(1000 * 60 * 60 * 24));
     </script>
-    <base href="http://polarproject.banff.org/">
+    <base href="http://www.polarregions.net/installation/">
     <link rel="stylesheet" type="text/css" href="css/polarproject.css">
     <link rel="stylesheet"  href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.datepicker.css" />

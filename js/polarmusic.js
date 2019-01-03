@@ -6,28 +6,27 @@ var internalMidiReady = false;
 var externalMidiReady = false;
 var synthsCreated = false;
 var canvasWidth = 800;
+var globalUpSpeed = -0.2
 
 function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
         synthsCreated = true;
         var northPole = new PolarSynth({
-            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate()+"_north.json",
             internalOrExternal: "internal",
             externalSynthChannel : 1,
             externalSynthString: "VirtualMIDISynth #1",
             internalSynthGMPatch: 0,
             internalSynthInstrument: "acoustic_grand_piano",
-            moveSpeed : 0.2,
+            moveSpeed : globalUpSpeed,
             whichSide : "left"
         });
         var southPole = new PolarSynth({
-            fileString : "icefiles/"+currentDate.getFullYear()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear()+"-"+(currentDate.getMonth()+1)+"-"+currentDate.getDate()+"_south.json",
             internalOrExternal: "internal",
             externalSynthChannel : 1,
             externalSynthString: "VirtualMIDISynth #1",
             internalSynthGMPatch: 0,
             internalSynthInstrument: "acoustic_grand_piano",
-            moveSpeed : 0.2,
+            moveSpeed : globalUpSpeed,
             whichSide : "right"
         });
         paper.view.onFrame = function(event) {
@@ -70,11 +69,6 @@ function debug(debug_arg) {
     if (CONSOLE_DEBUGGING) console.log(debug_arg);
 }
 
-function drawInit() {
-    northPolePaths = new Array();
-    southPoleSouths = new Array();
-}
-
 
 function PolarSynth(p) {
     this.params = p;
@@ -84,11 +78,11 @@ function PolarSynth(p) {
     }
     this.internalMidiChannel = (this.params.hasOwnProperty("internalSynthGMPatch")) ?this.params.internalSynthGMPatch : 0;
     this.noteQueue = new Array();
-    this.paths = new paper.Group();
-    this.upSpeed = -1;
+    this.linePaths = new paper.Group();
+    this.lineUpSpeed = -1;
     this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
     this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
-    if (this.params.moveSpeed) this.upSpeed = 0-this.params.moveSpeed;
+    if (this.params.moveSpeed) this.lineUpSpeed = 0+this.params.moveSpeed;
     this.lastNP = 0;
     this.lastVert = 0;
     this.vertOffset = 0;
@@ -104,13 +98,13 @@ function PolarSynth(p) {
     this.startSynth = function(whichDate,northOrSouth) {
         var fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDate()+"_"+northOrSouth+".json";
         this.stopAllNotes();
-        this.paths.translate([0,(0-this.vertOffset)]);
-        this.paths.removeChildren();
+        this.linePaths.translate([0,(0-this.vertOffset)]);
+        this.linePaths.removeChildren();
         this.noteQueue = new Array();
-        this.upSpeed = -1;
+        this.lineUpSpeed = -1;
         this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
         this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
-        if (this.params.moveSpeed) this.upSpeed = 0-this.params.moveSpeed;
+        if (this.params.moveSpeed) this.lineUpSpeed = 0-this.params.moveSpeed;
         this.lastNP = 0;
         this.lastVert = 0;
         this.vertOffset = 0;
@@ -125,7 +119,7 @@ function PolarSynth(p) {
         newPath.add([(this.sideBase + (this.lastNP * 3 * this.horzMultiplier)),this.lastVert]);
         newPath.add([(this.sideBase + (nP * 3 * this.horzMultiplier)),vertPosition]);
         newPath.translate(0,this.vertOffset);
-        this.paths.addChild(newPath);
+        this.linePaths.addChild(newPath);
         this.lastVert = vertPosition;
         this.lastNP = nP;
         paper.view.draw();
@@ -155,8 +149,17 @@ function PolarSynth(p) {
     }
 
     this.moveUp = function() {
-        self.paths.translate([0,self.upSpeed]);
-        self.vertOffset += self.upSpeed;
+        self.linePaths.translate([0,self.lineUpSpeed]);
+        self.vertOffset += self.lineUpSpeed;
+        if (self.params.whichSide == "right") {
+            var shouldBeZero = (self.lastVert + self.vertOffset) - ($(window).height() / 2);
+            if ((shouldBeZero < -10 ) && (globalUpSpeed < -0.1)) {
+                globalUpSpeed = globalUpSpeed + 0.0005;
+            } else if ((shouldBeZero > 10)&& (globalUpSpeed > -0.4)) {
+                globalUpSpeed = globalUpSpeed - 0.0005;
+            }
+        }
+        self.lineUpSpeed = globalUpSpeed;
     }
 
 }

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="fd2b0c72-d07b-4d37-b49c-2cc9334cdd18" name="Lou Sheppard Site" url="http://polarproject.banff.org">
-        <fileTransfer host="polarproject.banff.org" port="22" rootFolder="/home/lousheppard/polarproject.banff.org/" accessType="SFTP">
+      <webServer id="fd2b0c72-d07b-4d37-b49c-2cc9334cdd18" name="Lou Sheppard Site" url="http://tinkerbell.dreamhost.com">
+        <fileTransfer host="tinkerbell.dreamhost.com" port="22" rootFolder="/home/loursheppard/polarregions.net/installation" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
