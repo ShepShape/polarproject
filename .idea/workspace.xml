@@ -2,73 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fd34e83-c656-4456-930f-cc0ca9f34b7e" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/.htaccess" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/polarproject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/polarproject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/jquery.mobile.datepicker.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/jquery.mobile.datepicker.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/jquery.mobile.datepicker.theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/jquery.mobile.datepicker.theme.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/polarproject.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/polarproject.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/theme-template.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/theme-template.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/icefilegenerator.php" beforeDir="false" afterPath="$PROJECT_DIR$/icefilegenerator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/main.svg" beforeDir="false" afterPath="$PROJECT_DIR$/images/main.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/datepicker.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/datepicker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/jquery.mobile.datepicker.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/jquery.mobile.datepicker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/Base64.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/Base64.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/Base64binary.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/Base64binary.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/Gruntfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/Gruntfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/WebAudioAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/WebAudioAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/WebMIDIAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/WebMIDIAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/audioDetect.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/audioDetect.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/dom_request_script.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/dom_request_script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/dom_request_xhr.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/dom_request_xhr.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/gm.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/gm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/loader.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/loader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/midifile.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/midifile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/player.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/player.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/plugin.audiotag.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/plugin.audiotag.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/plugin.webaudio.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/plugin.webaudio.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/plugin.webmidi.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/plugin.webmidi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/replayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/replayer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/stream.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/stream.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/synesthesia.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/synesthesia.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/midi/webmidi.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/midi/webmidi.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/paper/paper-core.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-core.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/paper/paper-core.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-core.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/paper/paper-full.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-full.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/paper/paper-full.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-full.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/polarmusic.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/polarmusic.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ledsketch/ledsketch.ino" beforeDir="false" afterPath="$PROJECT_DIR$/ledsketch/ledsketch.ino" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lights.php" beforeDir="false" afterPath="$PROJECT_DIR$/lights.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/midi/midi.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/php/midi/midi.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/midi/midi_conversion.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/php/midi/midi_conversion.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/midi/midi_duration.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/php/midi/midi_duration.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/midi/midi_rttl.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/php/midi/midi_rttl.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/midi/midi_trim.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/php/midi/midi_trim.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/midi/midi_volume.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/php/midi/midi_volume.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/AUTHORS" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/AUTHORS" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/COPYING" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/COPYING" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/ChangeLog" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/ChangeLog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/NEWS" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/NEWS" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/README" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/README-WIN" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/README-WIN" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/mkbitmap.1" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/mkbitmap.1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/potrace/potrace.1" beforeDir="false" afterPath="$PROJECT_DIR$/potrace/potrace.1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/acoustic_grand_piano-mp3.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/acoustic_grand_piano-mp3.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/acoustic_grand_piano-ogg.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/acoustic_grand_piano-ogg.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/bright_acoustic_piano-mp3.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/bright_acoustic_piano-mp3.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/bright_acoustic_piano-ogg.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/bright_acoustic_piano-ogg.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/celesta-mp3.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/celesta-mp3.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/celesta-ogg.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/celesta-ogg.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/electric_grand_piano-mp3.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/electric_grand_piano-mp3.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/electric_grand_piano-ogg.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/electric_grand_piano-ogg.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/honkytonk_piano-mp3.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/honkytonk_piano-mp3.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundfont/honkytonk_piano-ogg.js" beforeDir="false" afterPath="$PROJECT_DIR$/soundfont/honkytonk_piano-ogg.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -81,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="33" column="13" lean-forward="true" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+            <state relative-caret-position="512">
+              <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -90,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+            <state relative-caret-position="226">
+              <caret line="175" column="43" selection-start-line="175" selection-start-column="43" selection-end-line="175" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -99,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/polarproject.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="526">
-              <caret line="83" selection-start-line="83" selection-end-line="83" />
+            <state relative-caret-position="136">
+              <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -117,7 +52,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&lt;</find>
       <find>$isNorth</find>
       <find>polart</find>
       <find>print_r</find>
@@ -147,6 +81,7 @@
       <find>Starting</find>
       <find>fileString</find>
       <find>drawInit</find>
+      <find>width</find>
     </findStrings>
     <replaceStrings>
       <replace>synthString</replace>
@@ -162,6 +97,7 @@
       <replace>BASE_PATH</replace>
       <replace>isInstallation</replace>
       <replace>date-input</replace>
+      <replace>fileString</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -178,10 +114,10 @@
         <option value="$PROJECT_DIR$/lights.php" />
         <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/test.php" />
-        <option value="$PROJECT_DIR$/css/polarproject.css" />
         <option value="$PROJECT_DIR$/.htaccess" />
         <option value="$PROJECT_DIR$/icefilegenerator.php" />
         <option value="$PROJECT_DIR$/index.php" />
+        <option value="$PROJECT_DIR$/css/polarproject.css" />
         <option value="$PROJECT_DIR$/js/polarmusic.js" />
       </list>
     </option>
@@ -301,18 +237,18 @@
       <workItem from="1510455391707" duration="82000" />
       <workItem from="1510621117139" duration="1030000" />
       <workItem from="1544725535505" duration="5557000" />
-      <workItem from="1546540053989" duration="5727000" />
+      <workItem from="1546540053989" duration="12562000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="199058000" />
+    <option name="totallyTimeSpent" value="205893000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17750533" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17750533" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -332,7 +268,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="right" id="Remote Host" order="4" visible="true" weight="0.0826226" />
+      <window_info active="true" anchor="right" id="Remote Host" order="4" visible="true" weight="0.0826226" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -377,13 +313,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/polarproject.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="526">
-          <caret line="83" selection-start-line="83" selection-end-line="83" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.htaccess">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -391,17 +320,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/polarproject.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="33" column="13" lean-forward="true" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+        <state relative-caret-position="512">
+          <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+        <state relative-caret-position="226">
+          <caret line="175" column="43" selection-start-line="175" selection-start-column="43" selection-end-line="175" selection-end-column="43" />
         </state>
       </provider>
     </entry>
