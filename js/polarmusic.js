@@ -7,7 +7,9 @@ var externalMidiReady = false;
 var synthsCreated = false;
 var canvasWidth = 1000;
 var pngWidth = 304;
-var globalUpSpeed = -0.2
+var globalUpSpeed = -0.2;
+var xCounter = 0;
+var yCounter = 0;
 
 function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
@@ -80,7 +82,7 @@ function PolarSynth(p) {
     this.internalMidiChannel = (this.params.hasOwnProperty("internalSynthGMPatch")) ?this.params.internalSynthGMPatch : 0;
     this.noteQueue = new Array();
     this.linePaths = new paper.Group();
-    this.mapPaths = new paper.Group();
+    this.mapPaths = new paper.Group({applyMatrix:false});
     this.lineUpSpeed = -1;
     this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
     this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
@@ -118,16 +120,16 @@ function PolarSynth(p) {
         console.log(svgItem);
         console.log(self);
         var leftPosition = self.params.whichSide == "left" ? (canvasWidth * 0.1 + pngWidth / 2) : canvasWidth - (pngWidth / 2 + canvasWidth * 0.1);
-        console.log(leftPosition);
         self.mapSVG = svgItem;
         self.mapPaths.addChild(self.mapSVG);
-        self.mapPaths.setPosition(leftPosition, 350);
+        self.mapPaths.position = new paper.Point(0,0);
+        self.mapPaths.translate(leftPosition, 350);
         //self.mapPaths.fillColor = new paper.Color(1, 0, 0);
         self.mapSVG.opacity = 0.3;
     }
 
     this.drawNote = function(nP,nT,nV,nRx,nRy) {
-        console.log(nRx+"\t"+nRy);
+        //if (this.params.whichSide == "right") console.log("right:\t"+nRx+"\t"+nRy);
         var vertPosition = (nT / 50);
         var newPath = new paper.Path();
         newPath.strokeWidth = 2;
@@ -136,6 +138,10 @@ function PolarSynth(p) {
         newPath.add([(this.sideBase + (nP * 3 * this.horzMultiplier)),vertPosition]);
         newPath.translate(0,this.vertOffset);
         this.linePaths.addChild(newPath);
+        var newCircle =  new paper.Shape.Circle(new paper.Point(nRx,this.mapPaths.bounds.height-nRy), 1.5);
+        newCircle.fillColor = (this.params.whichSide == "right") ? "red": "blue";
+
+        this.mapPaths.addChild(newCircle);
         this.lastVert = vertPosition;
         this.lastNP = nP;
         paper.view.draw();
@@ -147,12 +153,12 @@ function PolarSynth(p) {
             MIDI.setVolume(self.internalMidiChannel, 127);
         }
         for(var i=0;i<data.orderedPoints.length;i++) {
-            notePitch = data.orderedPoints[i].pitch;
-            noteTime = data.orderedPoints[i].time;
-            noteDuration = data.orderedPoints[i].duration;
-            noteVelocity = data.orderedPoints[i].velocity;
-            noteRawX = data.orderedPoints[i].rawx;
-            noteRawY = data.orderedPoints[i].rawy;
+            var notePitch = data.orderedPoints[i].pitch;
+            var noteTime = data.orderedPoints[i].time;
+            var noteDuration = data.orderedPoints[i].duration;
+            var noteVelocity = data.orderedPoints[i].velocity;
+            var noteRawX = parseFloat(data.orderedPoints[i].rawx);
+            var noteRawY = parseFloat(data.orderedPoints[i].rawy);
             self.noteQueue.push(setTimeout(function(nP,nT,nV,nRx,nRy){
                 if (self.params.internalOrExternal == "external") {
                     self.externalMidiOut.playNote(nP,self.externalMidiChannel,{duration:noteDuration,velocity:noteVelocity});
@@ -168,12 +174,13 @@ function PolarSynth(p) {
 
     this.moveUp = function() {
         self.linePaths.translate([0,self.lineUpSpeed]);
+        //self.mapPaths.rotate(0.1);
         self.vertOffset += self.lineUpSpeed;
         if (self.params.whichSide == "right") {
             var shouldBeZero = (self.lastVert + self.vertOffset) - ($(window).height() / 2);
             if ((shouldBeZero < -10 ) && (globalUpSpeed < -0.1)) {
                 globalUpSpeed = globalUpSpeed + 0.0005;
-            } else if ((shouldBeZero > 10) && (globalUpSpeed > -0.5)) {
+            } else if ((shouldBeZero > 10) && (globalUpSpeed > -0.7)) {
                 globalUpSpeed = globalUpSpeed - 0.0005;
             }
         }

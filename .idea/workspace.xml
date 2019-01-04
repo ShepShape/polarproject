@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fd34e83-c656-4456-930f-cc0ca9f34b7e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/css/polarproject.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/polarproject.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/paper/paper-core.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-core.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/paper/paper-core.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-core.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/paper/paper-full.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-full.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/paper/paper-full.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/paper/paper-full.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/polarmusic.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/polarmusic.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +21,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="512">
-              <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
+            <state relative-caret-position="855">
+              <caret line="57" column="40" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -25,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="175" column="43" selection-start-line="175" selection-start-column="43" selection-end-line="175" selection-end-column="43" />
+            <state relative-caret-position="222">
+              <caret line="176" column="10" selection-start-line="176" selection-start-column="10" selection-end-line="176" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -34,7 +39,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/polarproject.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
+            <state relative-caret-position="120">
               <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
             </state>
           </provider>
@@ -52,9 +57,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>$isNorth</find>
-      <find>polart</find>
-      <find>print_r</find>
       <find>velocity</find>
       <find>generateMIDI</find>
       <find>imagick</find>
@@ -82,6 +84,9 @@
       <find>fileString</find>
       <find>drawInit</find>
       <find>width</find>
+      <find>this.mapp</find>
+      <find>paper</find>
+      <find>.mapPaths</find>
     </findStrings>
     <replaceStrings>
       <replace>synthString</replace>
@@ -116,8 +121,8 @@
         <option value="$PROJECT_DIR$/test.php" />
         <option value="$PROJECT_DIR$/.htaccess" />
         <option value="$PROJECT_DIR$/icefilegenerator.php" />
-        <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/css/polarproject.css" />
+        <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/js/polarmusic.js" />
       </list>
     </option>
@@ -133,10 +138,10 @@
     <servers />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1657" />
-    <option name="y" value="55" />
-    <option name="width" value="1563" />
-    <option name="height" value="1100" />
+    <option name="x" value="1" />
+    <option name="y" value="23" />
+    <option name="width" value="1920" />
+    <option name="height" value="1109" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -149,6 +154,11 @@
             <path>
               <item name="polarproject" type="b2602c69:ProjectViewProjectNode" />
               <item name="polarproject" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="polarproject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="polarproject" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -167,7 +177,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="nodejs_interpreter_path" value="C:/dev/nodejs/node" />
+    <property name="nodejs_interpreter_path" value="node" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -238,17 +248,18 @@
       <workItem from="1510621117139" duration="1030000" />
       <workItem from="1544725535505" duration="5557000" />
       <workItem from="1546540053989" duration="12562000" />
+      <workItem from="1546567935742" duration="6911000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="205893000" />
+    <option name="totallyTimeSpent" value="212804000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1" y="23" width="1920" height="1109" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17750533" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17944622" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -260,15 +271,15 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5165245" side_tool="true" visible="true" weight="0.34127843" />
-      <window_info anchor="bottom" id="File Transfer" order="10" sideWeight="0.48347548" visible="true" weight="0.34127843" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5170394" side_tool="true" visible="true" weight="0.3411996" />
+      <window_info anchor="bottom" id="File Transfer" order="10" sideWeight="0.48296058" visible="true" weight="0.3411996" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info active="true" anchor="right" id="Remote Host" order="4" visible="true" weight="0.0826226" />
+      <window_info anchor="right" id="Remote Host" order="4" visible="true" weight="0.08253461" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -322,22 +333,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/css/polarproject.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
+        <state relative-caret-position="120">
           <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
+        <state relative-caret-position="855">
+          <caret line="57" column="40" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="175" column="43" selection-start-line="175" selection-start-column="43" selection-end-line="175" selection-end-column="43" />
+        <state relative-caret-position="222">
+          <caret line="176" column="10" selection-start-line="176" selection-start-column="10" selection-end-line="176" selection-end-column="10" />
         </state>
       </provider>
     </entry>
