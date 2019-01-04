@@ -81,6 +81,7 @@ function PolarSynth(p) {
     }
     this.internalMidiChannel = (this.params.hasOwnProperty("internalSynthGMPatch")) ?this.params.internalSynthGMPatch : 0;
     this.noteQueue = new Array();
+    this.pointQueue = new Array();
     this.linePaths = new paper.Group();
     this.mapPaths = new paper.Group({applyMatrix:false});
     this.lineUpSpeed = -1;
@@ -90,6 +91,7 @@ function PolarSynth(p) {
     this.lastNP = 0;
     this.lastVert = 0;
     this.vertOffset = 0;
+    this.loadComplete = false;
     var self = this;
 
 
@@ -100,11 +102,12 @@ function PolarSynth(p) {
     }
 
     this.startSynth = function(whichDate,northOrSouth) {
-        var fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDate()+"_"+northOrSouth;
         this.stopAllNotes();
         this.linePaths.translate([0,(0-this.vertOffset)]);
         this.linePaths.removeChildren();
         this.noteQueue = new Array();
+        this.pointQueue = new Array();
+        this.linePaths = new paper.Group();
         this.lineUpSpeed = -1;
         this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
         this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
@@ -112,13 +115,13 @@ function PolarSynth(p) {
         this.lastNP = 0;
         this.lastVert = 0;
         this.vertOffset = 0;
-        paper.project.importSVG(fileString+".svg",{insert:false,onLoad:this.setupSVG});
-        $.getJSON( fileString+".json" , function(data) {self.startMusic(data)});
+        this.loadComplete = false;
+        this.fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDate()+"_"+northOrSouth;
+        paper.project.importSVG(this.fileString+".svg",{insert:false,onLoad:this.setupSVG});
+
     }
 
     this.setupSVG = function(svgItem,svgStr) {
-        console.log(svgItem);
-        console.log(self);
         var leftPosition = self.params.whichSide == "left" ? (canvasWidth * 0.1 + pngWidth / 2) : canvasWidth - (pngWidth / 2 + canvasWidth * 0.1);
         self.mapSVG = svgItem;
         self.mapPaths.addChild(self.mapSVG);
@@ -126,10 +129,10 @@ function PolarSynth(p) {
         self.mapPaths.translate(leftPosition, 350);
         //self.mapPaths.fillColor = new paper.Color(1, 0, 0);
         self.mapSVG.opacity = 0.3;
+        $.getJSON(self.fileString+".json" , function(data) {self.startMusic(data)});
     }
 
     this.drawNote = function(nP,nT,nV,nRx,nRy) {
-        //if (this.params.whichSide == "right") console.log("right:\t"+nRx+"\t"+nRy);
         var vertPosition = (nT / 50);
         var newPath = new paper.Path();
         newPath.strokeWidth = 2;
@@ -138,12 +141,10 @@ function PolarSynth(p) {
         newPath.add([(this.sideBase + (nP * 3 * this.horzMultiplier)),vertPosition]);
         newPath.translate(0,this.vertOffset);
         this.linePaths.addChild(newPath);
-        var newCircle =  new paper.Shape.Circle(new paper.Point(nRx,this.mapPaths.bounds.height-nRy), 1.5);
-        newCircle.fillColor = (this.params.whichSide == "right") ? "red": "blue";
-
-        this.mapPaths.addChild(newCircle);
         this.lastVert = vertPosition;
         this.lastNP = nP;
+        var showPoint = this.pointQueue.shift();
+        showPoint.visible = true;
         paper.view.draw();
     }
 
@@ -159,6 +160,11 @@ function PolarSynth(p) {
             var noteVelocity = data.orderedPoints[i].velocity;
             var noteRawX = parseFloat(data.orderedPoints[i].rawx);
             var noteRawY = parseFloat(data.orderedPoints[i].rawy);
+            var newPoint =  new paper.Shape.Circle(new paper.Point(noteRawX,self.mapPaths.bounds.height-noteRawY), 1.5);
+            newPoint.fillColor = (self.params.whichSide == "right") ? "red": "blue";
+            newPoint.visible = false;
+            self.pointQueue.push(newPoint);
+            self.mapPaths.addChild(newPoint);
             self.noteQueue.push(setTimeout(function(nP,nT,nV,nRx,nRy){
                 if (self.params.internalOrExternal == "external") {
                     self.externalMidiOut.playNote(nP,self.externalMidiChannel,{duration:noteDuration,velocity:noteVelocity});
@@ -169,22 +175,25 @@ function PolarSynth(p) {
                 self.drawNote(nP,nT,nV,nRx,nRy);
             },noteTime,notePitch,noteTime,noteVelocity,noteRawX,noteRawY));
         }
+        this.loadComplete = true;
         if (isInstallation) setTimeout(self.startSynth,(noteTime+noteDuration));
     }
 
     this.moveUp = function() {
-        self.linePaths.translate([0,self.lineUpSpeed]);
-        //self.mapPaths.rotate(0.1);
-        self.vertOffset += self.lineUpSpeed;
-        if (self.params.whichSide == "right") {
-            var shouldBeZero = (self.lastVert + self.vertOffset) - ($(window).height() / 2);
-            if ((shouldBeZero < -10 ) && (globalUpSpeed < -0.1)) {
-                globalUpSpeed = globalUpSpeed + 0.0005;
-            } else if ((shouldBeZero > 10) && (globalUpSpeed > -0.7)) {
-                globalUpSpeed = globalUpSpeed - 0.0005;
+        if (self.loadComplete) {
+            self.linePaths.translate([0,self.lineUpSpeed]);
+            self.mapPaths.rotate(0.1*self.horzMultiplier);
+            self.vertOffset += self.lineUpSpeed;
+            if (self.params.whichSide == "left") {
+                var shouldBeZero = (self.lastVert + self.vertOffset) - ($(window).height() / 2);
+                if ((shouldBeZero < -10 ) && (globalUpSpeed < -0.1)) {
+                    globalUpSpeed = globalUpSpeed + 0.005;
+                } else if ((shouldBeZero > 10) && (globalUpSpeed > -3)) {
+                    globalUpSpeed = globalUpSpeed - 0.005;
+                }
             }
+            self.lineUpSpeed = globalUpSpeed;
         }
-        self.lineUpSpeed = globalUpSpeed;
     }
 
 }
