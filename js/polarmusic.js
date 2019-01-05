@@ -8,10 +8,7 @@ var synthsCreated = false;
 var canvasWidth = 1000;
 var pngWidth = 304;
 var globalUpSpeed = -0.2;
-var xCounter = 0;
-var yCounter = 0;
-console.log(paper.Rectangle);
-console.log(paper.Tween);
+
 
 function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
@@ -93,7 +90,7 @@ function PolarSynth(p) {
     this.lastNP = 0;
     this.lastVert = 0;
     this.vertOffset = 0;
-    this.mapScaleFactor = 1.25;
+    this.mapScaleFactor = 1.5;
     this.mapLeftPosition = this.params.whichSide == "left" ?
         (canvasWidth * (0.1) + (pngWidth * this.mapScaleFactor ) / 2) :
         canvasWidth - ((pngWidth * this.mapScaleFactor ) / 2 + canvasWidth * (0.1));
@@ -162,6 +159,7 @@ function PolarSynth(p) {
         this.lastNP = nP;
 
         var thisPoint = this.pointQueue.shift();
+        console.log(thisPoint.tween);
         thisPoint.visible = true;
 
         paper.view.draw();
@@ -234,6 +232,7 @@ $(function() {
     });
     var canvas = $("#polarCanvas")[0];
     paper.setup(canvas);
+    console.log('hello');
     if (LOAD_EXTERNAL_MIDI) {
         WebMidi.enable(function() {
             debug('external MIDI subsystem loaded');
