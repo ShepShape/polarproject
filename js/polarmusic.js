@@ -10,6 +10,8 @@ var pngWidth = 304;
 var globalUpSpeed = -0.2;
 var xCounter = 0;
 var yCounter = 0;
+console.log(paper.Rectangle);
+console.log(paper.Tween);
 
 function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
@@ -91,13 +93,29 @@ function PolarSynth(p) {
     this.lastNP = 0;
     this.lastVert = 0;
     this.vertOffset = 0;
+    this.mapScaleFactor = 1.25;
+    this.mapLeftPosition = this.params.whichSide == "left" ?
+        (canvasWidth * (0.1) + (pngWidth * this.mapScaleFactor ) / 2) :
+        canvasWidth - ((pngWidth * this.mapScaleFactor ) / 2 + canvasWidth * (0.1));
     this.loadComplete = false;
     var self = this;
+    $(document).keypress(function(event) {
+        self.handleKeyPress(event);
+    });
 
 
     this.stopAllNotes = function() {
         while(this.noteQueue.length>0) {
             clearTimeout(this.noteQueue.pop());
+        }
+    }
+
+    this.handleKeyPress = function(e) {
+        if (((e.key == "l") || (e.key =="L")) && (this.linePaths)) {
+            this.linePaths.visible = !this.linePaths.visible;
+        }
+        if (((e.key == "m") || (e.key =="M")) && (this.mapPaths)) {
+            this.mapPaths.visible = !this.mapPaths.visible;
         }
     }
 
@@ -122,13 +140,12 @@ function PolarSynth(p) {
     }
 
     this.setupSVG = function(svgItem,svgStr) {
-        var leftPosition = self.params.whichSide == "left" ? (canvasWidth * 0.1 + pngWidth / 2) : canvasWidth - (pngWidth / 2 + canvasWidth * 0.1);
+
         self.mapSVG = svgItem;
         self.mapPaths.addChild(self.mapSVG);
         self.mapPaths.position = new paper.Point(0,0);
-        self.mapPaths.translate(leftPosition, 350);
         //self.mapPaths.fillColor = new paper.Color(1, 0, 0);
-        self.mapSVG.opacity = 0.3;
+        self.mapSVG.opacity = 0.0;
         $.getJSON(self.fileString+".json" , function(data) {self.startMusic(data)});
     }
 
@@ -143,25 +160,27 @@ function PolarSynth(p) {
         this.linePaths.addChild(newPath);
         this.lastVert = vertPosition;
         this.lastNP = nP;
-        var showPoint = this.pointQueue.shift();
-        showPoint.visible = true;
+
+        var thisPoint = this.pointQueue.shift();
+        thisPoint.visible = true;
+
         paper.view.draw();
     }
 
     this.startMusic = function (data) {
-        var notePitch,noteTime,noteDuration,noteVelocity;
+        var notePitch,noteTime,noteDuration,noteVelocity,noteRawX,noteRawY,newPoint;
         if (self.params.internalOrExternal == "external") {
             MIDI.setVolume(self.internalMidiChannel, 127);
         }
         for(var i=0;i<data.orderedPoints.length;i++) {
-            var notePitch = data.orderedPoints[i].pitch;
-            var noteTime = data.orderedPoints[i].time;
-            var noteDuration = data.orderedPoints[i].duration;
-            var noteVelocity = data.orderedPoints[i].velocity;
-            var noteRawX = parseFloat(data.orderedPoints[i].rawx);
-            var noteRawY = parseFloat(data.orderedPoints[i].rawy);
-            var newPoint =  new paper.Shape.Circle(new paper.Point(noteRawX,self.mapPaths.bounds.height-noteRawY), 1.5);
-            newPoint.fillColor = (self.params.whichSide == "right") ? "red": "blue";
+            notePitch = data.orderedPoints[i].pitch;
+            noteTime = data.orderedPoints[i].time;
+            noteDuration = data.orderedPoints[i].duration;
+            noteVelocity = data.orderedPoints[i].velocity;
+            noteRawX = parseFloat(data.orderedPoints[i].rawx);
+            noteRawY = parseFloat(data.orderedPoints[i].rawy);
+            newPoint =  new paper.Path.Circle(new paper.Point(noteRawX,self.mapPaths.bounds.height-noteRawY), 1.0);
+            newPoint.fillColor = (self.params.whichSide == "right") ? "black": "black";
             newPoint.visible = false;
             self.pointQueue.push(newPoint);
             self.mapPaths.addChild(newPoint);
@@ -175,6 +194,9 @@ function PolarSynth(p) {
                 self.drawNote(nP,nT,nV,nRx,nRy);
             },noteTime,notePitch,noteTime,noteVelocity,noteRawX,noteRawY));
         }
+        self.mapPaths.translate(self.mapLeftPosition, 350);
+        self.mapPaths.scale(self.mapScaleFactor);
+        self.mapSVG.opacity = 0.3;
         this.loadComplete = true;
         if (isInstallation) setTimeout(self.startSynth,(noteTime+noteDuration));
     }
@@ -182,17 +204,14 @@ function PolarSynth(p) {
     this.moveUp = function() {
         if (self.loadComplete) {
             self.linePaths.translate([0,self.lineUpSpeed]);
-            self.mapPaths.rotate(0.1*self.horzMultiplier);
+            self.mapPaths.rotate(-0.1*self.horzMultiplier);
             self.vertOffset += self.lineUpSpeed;
             if (self.params.whichSide == "left") {
-                var shouldBeZero = (self.lastVert + self.vertOffset) - ($(window).height() / 2);
-                if ((shouldBeZero < -10 ) && (globalUpSpeed < -0.1)) {
-                    globalUpSpeed = globalUpSpeed + 0.005;
-                } else if ((shouldBeZero > 10) && (globalUpSpeed > -3)) {
-                    globalUpSpeed = globalUpSpeed - 0.005;
-                }
+                globalUpSpeed = ((self.lastVert + self.vertOffset) - ($(window).height() / 2)) * -0.005 ;
+                if (globalUpSpeed > -0.1) globalUpSpeed = -0.1;
             }
             self.lineUpSpeed = globalUpSpeed;
+            paper.view.draw();
         }
     }
 

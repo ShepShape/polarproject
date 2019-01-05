@@ -55,8 +55,9 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     <script src="js/datepicker.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="js/jquery.mobile.datepicker.js"></script>
-    <script src="js/paper/paper-full.min.js"></script>
+    <script src="js/paper/paper-core.js"></script>
     <script src="js/polarmusic.js"></script>
+
 
 
 </head>
