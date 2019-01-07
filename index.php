@@ -8,7 +8,7 @@
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-define('BASE_PATH','/home/loursheppard/polarregions.net/installation/'); //base path
+define('BASE_PATH','/home/loursheppard/polarregions.net/'); //base path
 define('ICE_FILES_PATH','icefiles'); //path to ice file hierarchy, included density image (JPEG), extent SVG, .mid files and .json files
 $firstTime = mktime(0,0,0,1,1,1990);
 $nowTime = time();
@@ -33,7 +33,7 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
         location.reload();
     },(1000 * 60 * 60 * 24));
     </script>
-    <base href="http://www.polarregions.net/installation/">
+    <base href="http://www.polarregions.net/">
     <link rel="stylesheet" type="text/css" href="css/polarproject.css">
     <link rel="stylesheet"  href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.datepicker.css" />
@@ -71,7 +71,7 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
             provided by the <a href="http://nsidc.org/arcticseaicenews/">National Snow and Ice Data Centre</a> in Colorado this automated program generates
         a musical score based on the perimeter and concentration of sea ice in the Arctic and Antarctic.
         The program maps the coordinates of the ice imagery to a musical scale, generating a distinct composition each day.
-        Ice which reaches further from the poles sounds as lower notes, while ice that sits closer to the pole sounds as higher notes. The score is
+            Ice which reaches further from the poles sounds as higher notes, while ice that sits closer to the pole sounds as lower notes. The score is
         composed in D Minor.</p>
         <p>You can listen to the present day's score or can choose a past date to listen to. The program produces scores based on all available daily data
         from the National Snow and Ice Data Centre, which stretches as far back as 1990. Each composition is approximately 15 minutes long.

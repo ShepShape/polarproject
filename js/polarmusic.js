@@ -141,7 +141,7 @@ function PolarSynth(p) {
         self.mapSVG = svgItem;
         self.mapPaths.addChild(self.mapSVG);
         self.mapPaths.position = new paper.Point(0,0);
-        //self.mapPaths.fillColor = new paper.Color(1, 0, 0);
+        self.mapSVG.fillColor = new paper.Color(0.83529411764,0.996,0.98);
         self.mapSVG.opacity = 0.0;
         $.getJSON(self.fileString+".json" , function(data) {self.startMusic(data)});
     }
@@ -178,7 +178,7 @@ function PolarSynth(p) {
             noteRawX = parseFloat(data.orderedPoints[i].rawx);
             noteRawY = parseFloat(data.orderedPoints[i].rawy);
             newPoint =  new paper.Path.Circle(new paper.Point(noteRawX,self.mapPaths.bounds.height-noteRawY), 1.0);
-            newPoint.fillColor = (self.params.whichSide == "right") ? "black": "black";
+            newPoint.fillColor = new paper.Color(1,1,1);
             newPoint.visible = false;
             self.pointQueue.push(newPoint);
             self.mapPaths.addChild(newPoint);
@@ -194,7 +194,7 @@ function PolarSynth(p) {
         }
         self.mapPaths.translate(self.mapLeftPosition, 350);
         self.mapPaths.scale(self.mapScaleFactor);
-        self.mapSVG.opacity = 0.3;
+        self.mapSVG.opacity = 1.0;
         this.loadComplete = true;
         if (isInstallation) setTimeout(self.startSynth,(noteTime+noteDuration));
     }

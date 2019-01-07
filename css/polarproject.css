@@ -11,8 +11,12 @@
 body, html {
     margin: 0px;
     padding: 0px;
+    background-color: #CCC !important;
 }
 
+div.ui-page {
+    background-color: #CCC !important;
+}
 
 #intro {
     position: fixed;
@@ -69,7 +73,7 @@ body, html {
     transition:.5s;
 }
 #intro #description a:hover {
-    color: #999;
+    color: #666;
 }
 
 #intro button {
