@@ -1,4 +1,4 @@
-CONSOLE_DEBUGGING = false;
+CONSOLE_DEBUGGING = true;
 LOAD_EXTERNAL_MIDI = false;
 
 
@@ -72,6 +72,7 @@ function debug(debug_arg) {
 }
 
 
+
 function PolarSynth(p) {
     this.params = p;
     if (LOAD_EXTERNAL_MIDI) {
@@ -105,7 +106,7 @@ function PolarSynth(p) {
         while(this.noteQueue.length>0) {
             clearTimeout(this.noteQueue.pop());
         }
-    }
+    };
 
     this.handleKeyPress = function(e) {
         if (((e.key == "l") || (e.key =="L")) && (this.linePaths)) {
@@ -114,15 +115,28 @@ function PolarSynth(p) {
         if (((e.key == "m") || (e.key =="M")) && (this.mapPaths)) {
             this.mapPaths.visible = !this.mapPaths.visible;
         }
-    }
+        if (((e.key == "r") || (e.key =="R")) && (this.linePaths)) {
+            if (this.isPlaying) this.resetSynth();
+        }
+    };
+
+    this.resetSynth = function() {
+        debug("resetting "+this.northOrSouth+" pole synth.");
+        this.startSynth(this.whichDate,this.northOrSouth);
+    };
 
     this.startSynth = function(whichDate,northOrSouth) {
+        this.isPlaying = true;
         this.stopAllNotes();
+        this.whichDate = whichDate;
+        this.northOrSouth = northOrSouth;
         this.linePaths.translate([0,(0-this.vertOffset)]);
         this.linePaths.removeChildren();
+        this.mapPaths.removeChildren();
         this.noteQueue = new Array();
         this.pointQueue = new Array();
         this.linePaths = new paper.Group();
+        this.mapPaths = new paper.Group({applyMatrix:false});
         this.lineUpSpeed = -1;
         this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
         this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
@@ -131,10 +145,10 @@ function PolarSynth(p) {
         this.lastVert = 0;
         this.vertOffset = 0;
         this.loadComplete = false;
-        this.fileString = "icefiles/"+whichDate.getFullYear()+"/"+(whichDate.getMonth()+1)+"/"+whichDate.getFullYear()+"-"+(whichDate.getMonth()+1)+"-"+whichDate.getDate()+"_"+northOrSouth;
+        this.fileString = "icefiles/"+this.whichDate.getFullYear()+"/"+(this.whichDate.getMonth()+1)+"/"+this.whichDate.getFullYear()+"-"+(this.whichDate.getMonth()+1)+"-"+this.whichDate.getDate()+"_"+this.northOrSouth;
         paper.project.importSVG(this.fileString+".svg",{insert:false,onLoad:this.setupSVG});
 
-    }
+    };
 
     this.setupSVG = function(svgItem,svgStr) {
 
@@ -144,7 +158,7 @@ function PolarSynth(p) {
         self.mapSVG.fillColor = new paper.Color(0.7,1,1);
         self.mapSVG.opacity = 0.0;
         $.getJSON(self.fileString+".json" , function(data) {self.startMusic(data)});
-    }
+    };
 
     this.drawNote = function(nP,nT,nV,nRx,nRy) {
         var vertPosition = (nT / 50);
@@ -161,7 +175,7 @@ function PolarSynth(p) {
         thisPoint.visible = true;
         thisPoint.tweenTo({'opacity':0.0},5000)
         paper.view.draw();
-    }
+    };
 
     this.startMusic = function (data) {
         var notePitch,noteTime,noteDuration,noteVelocity,noteRawX,noteRawY,newPoint;
@@ -194,8 +208,15 @@ function PolarSynth(p) {
         self.mapPaths.scale(self.mapScaleFactor);
         self.mapSVG.opacity = 0.5;
         this.loadComplete = true;
-        if (isInstallation) setTimeout(self.startSynth,(noteTime+noteDuration));
-    }
+        var resetMillis = noteTime+noteDuration;
+        if (isInstallation) {
+            var currentTime = new Date();
+            var endTime = new Date(currentTime.getTime()+resetMillis);
+            debug("The "+this.northOrSouth+" pole synth is scheduled to reset at: "+endTime.toString());
+            setTimeout(this.resetSynth,resetMillis);
+        }
+
+    };
 
     this.moveUp = function() {
         if (self.loadComplete) {
@@ -209,7 +230,7 @@ function PolarSynth(p) {
             self.lineUpSpeed = globalUpSpeed;
             paper.view.draw();
         }
-    }
+    };
 
 }
 
@@ -229,8 +250,7 @@ $(function() {
         document.location.href=fileString;
     });
     var canvas = $("#polarCanvas")[0];
-    paper.setup(canvas);
-    console.log('hello');
+    paper.setup(canvas);;
     if (LOAD_EXTERNAL_MIDI) {
         WebMidi.enable(function() {
             debug('external MIDI subsystem loaded');

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fd34e83-c656-4456-930f-cc0ca9f34b7e" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/polarmusic.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/polarmusic.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,7 +16,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-541">
+            <state relative-caret-position="805">
               <caret line="35" column="43" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
             </state>
           </provider>
@@ -24,8 +25,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="924">
-              <caret line="194" column="33" selection-start-line="194" selection-start-column="33" selection-end-line="194" selection-end-column="33" />
+            <state relative-caret-position="350">
+              <caret line="215" column="52" lean-forward="true" selection-start-line="215" selection-start-column="52" selection-end-line="215" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.htaccess">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="92">
+              <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -33,7 +43,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/polarproject.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
+            <state relative-caret-position="391">
               <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
             </state>
           </provider>
@@ -41,15 +51,13 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/theme-template.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-51" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/icefilegenerator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
+            <state relative-caret-position="230">
               <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="25" selection-end-column="103" />
             </state>
           </provider>
@@ -67,20 +75,16 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>WebMidi</find>
-      <find>Starting</find>
       <find>fileString</find>
       <find>drawInit</find>
       <find>width</find>
       <find>this.mapp</find>
       <find>.mapPaths</find>
       <find>startMusic</find>
-      <find>startSynth</find>
       <find>getFullYear</find>
       <find>whichDate</find>
       <find>hello</find>
       <find>self.lineUpSpeed =</find>
-      <find>console.log</find>
       <find>Base.extend</find>
       <find>Tween</find>
       <find>var Tween</find>
@@ -97,6 +101,10 @@
       <find>.Color</find>
       <find>lower</find>
       <find>.opacity</find>
+      <find>console.log</find>
+      <find>startSynth</find>
+      <find>mapPaths</find>
+      <find>isInstallation</find>
     </findStrings>
     <replaceStrings>
       <replace>synthString</replace>
@@ -266,16 +274,18 @@
       <workItem from="1546567935742" duration="10736000" />
       <workItem from="1546619295565" duration="11575000" />
       <workItem from="1546893443487" duration="3915000" />
+      <workItem from="1546898227727" duration="3279000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="232777000" />
+    <option name="totallyTimeSpent" value="236056000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.34381664" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24147122" />
       <window_info id="Structure" order="1" weight="0.25266525" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -287,8 +297,8 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.51759064" side_tool="true" visible="true" weight="0.34019503" />
-      <window_info anchor="bottom" id="File Transfer" order="10" sideWeight="0.4824094" visible="true" weight="0.34019503" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5181237" side_tool="true" visible="true" weight="0.3400223" />
+      <window_info anchor="bottom" id="File Transfer" order="10" sideWeight="0.48187634" visible="true" weight="0.3400223" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -308,11 +318,7 @@
     <entry file="file://$PROJECT_DIR$/mididownload.php" />
     <entry file="file://$PROJECT_DIR$/js/jquery-3.2.1.min.js" />
     <entry file="file://$PROJECT_DIR$/js/webmidi.min.js" />
-    <entry file="file://$PROJECT_DIR$/js/paper/paper-full.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1125" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/js/paper/paper-full.js" />
     <entry file="file://$PROJECT_DIR$/test.html" />
     <entry file="file://$PROJECT_DIR$/js/midi/build/MIDI.js" />
     <entry file="file://$PROJECT_DIR$/lights.php">
@@ -333,53 +339,45 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.php" />
-    <entry file="file://$PROJECT_DIR$/js/paper/paper-core.js">
+    <entry file="file://$PROJECT_DIR$/js/paper/paper-core.js" />
+    <entry file="file://$PROJECT_DIR$/images/main.svg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/polarproject.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2685">
-          <caret line="13629" column="9" selection-start-line="13629" selection-end-line="13629" selection-end-column="9" />
+        <state relative-caret-position="391">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/theme-template.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/icefilegenerator.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
+        <state relative-caret-position="230">
           <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="25" selection-end-column="103" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.htaccess">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
+        <state relative-caret-position="92">
           <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/main.svg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-541">
+        <state relative-caret-position="805">
           <caret line="35" column="43" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/theme-template.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/polarproject.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/polarmusic.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="924">
-          <caret line="194" column="33" selection-start-line="194" selection-start-column="33" selection-end-line="194" selection-end-column="33" />
+        <state relative-caret-position="350">
+          <caret line="215" column="52" lean-forward="true" selection-start-line="215" selection-start-column="52" selection-end-line="215" selection-end-column="52" />
         </state>
       </provider>
     </entry>
