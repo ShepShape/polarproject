@@ -77,7 +77,7 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
         from the National Snow and Ice Data Centre, which stretches as far back as 1990. Each composition is approximately 15 minutes long.
         On screen you will see an animation which traces the contour and density of the sea ice as each note is played. The right side of the animation shows
             the contour of Arctic ice, while the left side shows the Antarctic Ice.</p>
-        <p>Requiem fort the Polar regions was produced with support from the Hnatyshyn Foundation, The Harrison McCain Foundation and Arts Nova Scotia, while
+        <p>Requiem for the Polar regions was produced with support from the Hnatyshyn Foundation, The Harrison McCain Foundation and Arts Nova Scotia, while
         Lou Sheppard was the 2017 Emerging Atlantic Artist in Residence at Banff Centre for Arts and Creativity. The project was conceived of by <a href="http://lousheppard.com/">Lou Sheppard</a> and programmed
         with the assistance of Kenny Lozowski. The project exists as an online installation, a gallery installation and a series of live performances.</p>
         <p>For more information on Requiem for the Polar Regions please contact Lou Sheppard at <a href="mailto:lou@lousheppard.com">lou@lousheppard.com</a></p>
