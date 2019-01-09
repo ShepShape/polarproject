@@ -1,4 +1,4 @@
-CONSOLE_DEBUGGING = true;
+CONSOLE_DEBUGGING = false;
 LOAD_EXTERNAL_MIDI = false;
 
 var internalMidiReady = false;
@@ -111,8 +111,11 @@ function PolarSynth(p) {
         if (((e.key == "m") || (e.key =="M")) && (this.mapPaths)) {
             this.mapPaths.visible = !this.mapPaths.visible;
         }
-        if (((e.key == "r") || (e.key =="R")) && (this.linePaths)) {
+        if (((e.key == "s") || (e.key =="S")) && (this.linePaths)) {
             if (this.isPlaying) this.resetSynth();
+        }
+        if (((e.key == "r") || (e.key =="R")) && (this.linePaths)) {
+            location.reload(true);
         }
     };
 
@@ -211,6 +214,7 @@ function PolarSynth(p) {
         self.mapPaths.scale(self.mapScaleFactor);
         self.mapSVG.opacity = 0.5;
         self.loadComplete = true;
+        self.linePaths.visible = false;
         self.linePaths.tweenTo({'opacity':1.0},1000);
         self.mapPaths.tweenTo({'opacity':1.0},1000);
         var resetMillis = noteTime+noteDuration;
