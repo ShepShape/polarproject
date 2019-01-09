@@ -1,14 +1,12 @@
 CONSOLE_DEBUGGING = true;
 LOAD_EXTERNAL_MIDI = false;
 
-
 var internalMidiReady = false;
 var externalMidiReady = false;
 var synthsCreated = false;
 var canvasWidth = 1000;
 var pngWidth = 304;
 var globalUpSpeed = -0.2;
-
 
 function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
@@ -72,7 +70,6 @@ function debug(debug_arg) {
 }
 
 
-
 function PolarSynth(p) {
     this.params = p;
     if (LOAD_EXTERNAL_MIDI) {
@@ -100,7 +97,6 @@ function PolarSynth(p) {
     $(document).keypress(function(event) {
         self.handleKeyPress(event);
     });
-
 
     this.stopAllNotes = function() {
         while(this.noteQueue.length>0) {
@@ -151,7 +147,6 @@ function PolarSynth(p) {
     };
 
     this.setupSVG = function(svgItem,svgStr) {
-
         self.mapSVG = svgItem;
         self.mapPaths.addChild(self.mapSVG);
         self.mapPaths.position = new paper.Point(0,0);
@@ -160,7 +155,7 @@ function PolarSynth(p) {
         $.getJSON(self.fileString+".json" , function(data) {self.startMusic(data)});
     };
 
-    this.drawNote = function(nP,nT,nV,nRx,nRy) {
+    this.drawNote = function(nP,nT,nV) {
         var vertPosition = (nT / 50);
         var newPath = new paper.Path();
         newPath.strokeWidth = 2;
@@ -173,13 +168,15 @@ function PolarSynth(p) {
         this.lastNP = nP;
         var thisPoint = this.pointQueue.shift();
         thisPoint.visible = true;
-        thisPoint.tweenTo({'opacity':0.0},5000)
+        setTimeout(function() {
+            thisPoint.tweenTo({'opacity':0.0},2000);
+        },5000);
         paper.view.draw();
     };
 
     this.startMusic = function (data) {
         var notePitch,noteTime,noteDuration,noteVelocity,noteRawX,noteRawY,newPoint;
-        if (self.params.internalOrExternal == "external") {
+        if (self.params.internalOrExternal === "external") {
             MIDI.setVolume(self.internalMidiChannel, 127);
         }
         for(var i=0;i<data.orderedPoints.length;i++) {
@@ -194,15 +191,15 @@ function PolarSynth(p) {
             newPoint.visible = false;
             self.pointQueue.push(newPoint);
             self.mapPaths.addChild(newPoint);
-            self.noteQueue.push(setTimeout(function(nP,nT,nV,nRx,nRy){
+            self.noteQueue.push(setTimeout(function(nP,nT,nV){
                 if (self.params.internalOrExternal == "external") {
                     self.externalMidiOut.playNote(nP,self.externalMidiChannel,{duration:noteDuration,velocity:noteVelocity});
                 } else {
                     MIDI.noteOn(self.internalMidiChannel, nP, noteVelocity, 0);
                     MIDI.noteOff(self.internalMidiChannel, nP,(noteDuration/1000));
                 }
-                self.drawNote(nP,nT,nV,nRx,nRy);
-            },noteTime,notePitch,noteTime,noteVelocity,noteRawX,noteRawY));
+                self.drawNote(nP,nT,nV);
+            },noteTime,notePitch,noteTime,noteVelocity));
         }
         self.mapPaths.translate(self.mapLeftPosition, 350);
         self.mapPaths.scale(self.mapScaleFactor);
@@ -212,10 +209,9 @@ function PolarSynth(p) {
         if (isInstallation) {
             var currentTime = new Date();
             var endTime = new Date(currentTime.getTime()+resetMillis);
-            debug("The "+this.northOrSouth+" pole synth is scheduled to reset at: "+endTime.toString());
+            debug("The "+this.northOrSouth+" pole synth is scheduled to repeat at: "+endTime.toString());
             setTimeout(this.resetSynth,resetMillis);
         }
-
     };
 
     this.moveUp = function() {
@@ -233,9 +229,6 @@ function PolarSynth(p) {
     };
 
 }
-
-
-
 
 $(function() {
     $(".date-input").val(currentDate.getFullYear()+"-"+("0" + (currentDate.getMonth()+1)).slice(-2)+"-"+("0" + currentDate.getDate()).slice(-2));
