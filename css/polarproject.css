@@ -11,11 +11,11 @@
 body, html {
     margin: 0px;
     padding: 0px;
-    background-color: #CCC !important;
+    background-color: #00004d !important;
 }
 
 div.ui-page {
-    background-color: #CCC !important;
+    background-color: #00004d !important;
 }
 
 #intro {
@@ -26,9 +26,6 @@ div.ui-page {
     margin-left: -300px;
     width: 600px;
     height: 800px;
-    background-image: url("../images/main.svg");
-    background-repeat: no-repeat;
-    background-position: 0px 0px;
     display: none;
 }
 
@@ -40,10 +37,15 @@ div.ui-page {
     left: 5px;
     text-transform: uppercase;
     font-weight: normal;
-    color: black;
+    color: whitesmoke;
     font-size: 30px;
     width: 400px;
     cursor: default;
+}
+
+#intro #bgimage {
+    position: absolute;
+    opacity: 0.2;
 }
 
 #intro #description {
@@ -53,7 +55,7 @@ div.ui-page {
     top: 80px;
     left: 160px;
     font-weight: normal;
-    color: black;
+    color: #999;
     font-size: 12px;
     width: 450px;
     cursor: default;
@@ -65,7 +67,7 @@ div.ui-page {
 
 #intro #description a {
     text-decoration: none;
-    color: #10635f;
+    color: #e6faff;
     -o-transition:.5s;
     -ms-transition:.5s;
     -moz-transition:.5s;
@@ -73,7 +75,7 @@ div.ui-page {
     transition:.5s;
 }
 #intro #description a:hover {
-    color: #666;
+    color: #00ccff;
 }
 
 #intro button {

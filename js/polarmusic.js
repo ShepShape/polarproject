@@ -117,8 +117,12 @@ function PolarSynth(p) {
     };
 
     this.resetSynth = function() {
-        debug("resetting "+this.northOrSouth+" pole synth.");
-        this.startSynth(this.whichDate,this.northOrSouth);
+        debug("resetting "+self.northOrSouth+" pole synth.");
+        self.linePaths.tweenTo({'opacity':0.0},1000);
+        self.mapPaths.tweenTo({'opacity':0.0},1000);
+        setTimeout(function() {
+            self.startSynth(self.whichDate,self.northOrSouth);
+        },1000);
     };
 
     this.startSynth = function(whichDate,northOrSouth) {
@@ -133,6 +137,8 @@ function PolarSynth(p) {
         this.pointQueue = new Array();
         this.linePaths = new paper.Group();
         this.mapPaths = new paper.Group({applyMatrix:false});
+        this.mapPaths.opacity = 0.0;
+        this.linePaths.opacity = 0.0;
         this.lineUpSpeed = -1;
         this.horzMultiplier = this.params.whichSide == "left" ? 1.0 : -1.0;
         this.sideBase = this.params.whichSide == "left" ? 0 : canvasWidth;
@@ -159,7 +165,7 @@ function PolarSynth(p) {
         var vertPosition = (nT / 50);
         var newPath = new paper.Path();
         newPath.strokeWidth = 2;
-        newPath.strokeColor = new paper.Color(nV/127);
+        newPath.strokeColor = new paper.Color((1-nV/127));
         newPath.add([(this.sideBase + (this.lastNP * 3 * this.horzMultiplier)),this.lastVert]);
         newPath.add([(this.sideBase + (nP * 3 * this.horzMultiplier)),vertPosition]);
         newPath.translate(0,this.vertOffset);
@@ -169,8 +175,8 @@ function PolarSynth(p) {
         var thisPoint = this.pointQueue.shift();
         thisPoint.visible = true;
         setTimeout(function() {
-            thisPoint.tweenTo({'opacity':0.0},2000);
-        },5000);
+            thisPoint.tweenTo({'opacity':0.0},10000);
+        },60000);
         paper.view.draw();
     };
 
@@ -204,13 +210,15 @@ function PolarSynth(p) {
         self.mapPaths.translate(self.mapLeftPosition, 350);
         self.mapPaths.scale(self.mapScaleFactor);
         self.mapSVG.opacity = 0.5;
-        this.loadComplete = true;
+        self.loadComplete = true;
+        self.linePaths.tweenTo({'opacity':1.0},1000);
+        self.mapPaths.tweenTo({'opacity':1.0},1000);
         var resetMillis = noteTime+noteDuration;
         if (isInstallation) {
             var currentTime = new Date();
             var endTime = new Date(currentTime.getTime()+resetMillis);
-            debug("The "+this.northOrSouth+" pole synth is scheduled to repeat at: "+endTime.toString());
-            setTimeout(this.resetSynth,resetMillis);
+            debug("The "+self.northOrSouth+" pole synth is scheduled to repeat at: "+endTime.toString());
+            setTimeout(self.resetSynth,resetMillis);
         }
     };
 

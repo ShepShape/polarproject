@@ -54,8 +54,9 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     <!--<script src="js/midi/webmidi.min.js"></script>-->
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="js/datepicker.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="js/jquery.mobile.datepicker.js"></script>
+    <!--disabling mobile compatibility for now -->
+   <!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/jquery.mobile.datepicker.js"></script> -->
     <script src="js/paper/paper-full.min.js"></script>
     <script src="js/polarmusic.js"></script>
 
@@ -64,6 +65,7 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
 </head>
 <body>
 <div id="intro">
+    <img id="bgimage" src="images/main.svg" />
     <h1>Requiem For The Polar Regions</h1>
     <div id="description">
         <p>is an aural record of the shifting masses of sea ice in the Arctic and Antarctic oceans,
