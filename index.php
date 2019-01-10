@@ -29,6 +29,9 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     var currentDate = new Date((<?php print $currentTime; ?>*1000));
     var firstDate = new Date((<?php print $firstTime; ?>*1000));
     var isInstallation = <?php print ($_REQUEST['install'] == 'true') ? "true" : "false"; ?>;
+    var isExternalMIDI = <?php print ($_REQUEST['externalmidi'] == 'true') ? "true" : "false"; ?>;
+    var externalMIDIInstrumentString = "<?php print $_REQUEST['externalstring']; ?>";
+
     setTimeout(function() {
         location.reload();
     },(1000 * 60 * 60 * 24));
@@ -50,8 +53,7 @@ while (($currentTime>$firstTime) && ($foundDate == false)) {
     <script src="js/midi/plugin.webmidi.js" type="text/javascript"></script>
     <script src="js/midi/dom_request_xhr.js" type="text/javascript"></script>
     <script src="js/midi/dom_request_script.js" type="text/javascript"></script>
-    <!--enable the following line and the LOAD_EXTERNAL_MIDI variable to use an external softsynth -->
-    <!--<script src="js/midi/webmidi.min.js"></script>-->
+    <script src="js/midi/webmidi.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="js/datepicker.js"></script>
     <!--disabling mobile compatibility for now -->

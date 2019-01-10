@@ -1,6 +1,4 @@
-CONSOLE_DEBUGGING = false;
-LOAD_EXTERNAL_MIDI = false;
-
+var enableConsoleDebugging = false;
 var internalMidiReady = false;
 var externalMidiReady = false;
 var synthsCreated = false;
@@ -12,18 +10,18 @@ function createSynths() {
     if (internalMidiReady && externalMidiReady && !synthsCreated) {
         synthsCreated = true;
         var northPole = new PolarSynth({
-            internalOrExternal: "internal",
+            internalOrExternal: (isExternalMIDI ? "external" : "internal"),
             externalSynthChannel : 1,
-            externalSynthString: "VirtualMIDISynth #1",
+            externalSynthString: externalMIDIInstrumentString,
             internalSynthGMPatch: 0,
             internalSynthInstrument: "acoustic_grand_piano",
             moveSpeed : globalUpSpeed,
             whichSide : "left"
         });
         var southPole = new PolarSynth({
-            internalOrExternal: "internal",
+            internalOrExternal: (isExternalMIDI ? "external" : "internal"),
             externalSynthChannel : 1,
-            externalSynthString: "VirtualMIDISynth #1",
+            externalSynthString: externalMIDIInstrumentString,
             internalSynthGMPatch: 0,
             internalSynthInstrument: "acoustic_grand_piano",
             moveSpeed : globalUpSpeed,
@@ -66,13 +64,14 @@ function createSynths() {
 // utility functions
 
 function debug(debug_arg) {
-    if (CONSOLE_DEBUGGING) console.log(debug_arg);
+    if (enableConsoleDebugging) console.log(debug_arg);
 }
 
 
 function PolarSynth(p) {
     this.params = p;
-    if (LOAD_EXTERNAL_MIDI) {
+    if (isExternalMIDI) {
+        console.log(WebMidi.outputs);
         this.externalMidiOut = (this.params.hasOwnProperty("externalSynthString")) ? WebMidi.getOutputByName(this.params.externalSynthString) : WebMidi.outputs[0];
         this.externalMidiChannel = (this.params.hasOwnProperty("externalSynthChannel")) ? this.params.externalSynthChannel : 1;
     }
@@ -256,7 +255,7 @@ $(function() {
     });
     var canvas = $("#polarCanvas")[0];
     paper.setup(canvas);;
-    if (LOAD_EXTERNAL_MIDI) {
+    if (isExternalMIDI) {
         WebMidi.enable(function() {
             debug('external MIDI subsystem loaded');
             externalMidiReady = true;
